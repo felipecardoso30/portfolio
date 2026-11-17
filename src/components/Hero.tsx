@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import { useResumePdf } from '../hooks/useResumePdf';
 import { hero, NOME, type HeroMetric } from '../data/content';
-import WhatsAppMockup from './WhatsAppMockup';
+import OracChatMock from './OracChatMock';
 
 function useCountUp(target: number, decimals = 0, durationMs = 850) {
   const [value, setValue] = useState<number>(() =>
@@ -43,57 +43,14 @@ function MetricCard({ item }: { item: HeroMetric }) {
     (item.suffix ?? '');
 
   return (
-    <div
-      style={{
-        background: '#0E1217',
-        border: '1px solid #21262D',
-        borderRadius: '12px',
-        padding: '12px 16px',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '6px',
-        minWidth: '165px',
-        flex: '1 1 165px',
-      }}
-    >
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          gap: '8px',
-        }}
-      >
-        <span
-          aria-label={item.valueText}
-          style={{
-            fontSize: '1.35rem',
-            fontWeight: 800,
-            color: '#EA1D2C',
-            lineHeight: 1,
-          }}
-        >
+    <div className="metric-card">
+      <div className="metric-card__top">
+        <span aria-label={item.valueText} className="metric-card__value">
           <span aria-hidden="true">{formatted}</span>
         </span>
-        <span
-          style={{
-            fontSize: '0.68rem',
-            fontWeight: 700,
-            color: '#CBD5E1',
-            background: 'rgba(255, 255, 255, 0.05)',
-            border: '1px solid #30363D',
-            padding: '2px 8px',
-            borderRadius: '9999px',
-            textTransform: 'uppercase',
-            letterSpacing: '0.03em',
-          }}
-        >
-          {item.classification}
-        </span>
+        <span className="pill pill--sm">{item.classification}</span>
       </div>
-      <span style={{ fontSize: '0.84rem', color: '#CBD5E1', lineHeight: 1.35 }}>
-        {item.label}
-      </span>
+      <span className="metric-card__label">{item.label}</span>
     </div>
   );
 }
@@ -103,122 +60,35 @@ export default function Hero() {
   const { available: hasResumePdf, href: resumeHref } = useResumePdf();
 
   return (
-    <section
-      id="inicio"
-      className="section-ambient"
-      style={{
-        minHeight: '90vh',
-        display: 'flex',
-        alignItems: 'center',
-        paddingTop: '108px',
-        paddingBottom: '68px',
-        position: 'relative',
-      }}
-    >
-      <div
-        style={{
-          maxWidth: '1240px',
-          margin: '0 auto',
-          padding: '0 24px',
-          width: '100%',
-        }}
-      >
-        <div
-          ref={ref}
-          className="fade-in"
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-            gap: '48px',
-            alignItems: 'center',
-          }}
-        >
-          {/* Coluna Principal */}
-          <div>
+    <section id="inicio" className="hero-section section-ambient">
+      <div className="container">
+        <div ref={ref} className="fade-in hero-grid">
+          <div className="hero-content">
             <div className="section-badge hero-step" style={{ ['--step' as string]: 0 }}>
-              <span
-                style={{
-                  width: '8px',
-                  height: '8px',
-                  borderRadius: '50%',
-                  background: '#EA1D2C',
-                  display: 'inline-block',
-                }}
-              />
+              <span className="dot dot--accent" aria-hidden="true" />
               <span>{hero.badge}</span>
             </div>
 
-            <p
-              className="hero-step"
-              style={{
-                ['--step' as string]: 1,
-                fontSize: '0.95rem',
-                fontWeight: 700,
-                color: '#CBD5E1',
-                margin: '0 0 8px 0',
-                letterSpacing: '0.01em',
-              }}
-            >
+            <p className="hero-author hero-step" style={{ ['--step' as string]: 1 }}>
               {NOME}
             </p>
 
-            <h1
-              className="hero-step"
-              style={{
-                ['--step' as string]: 2,
-                fontSize: 'clamp(2rem, 4.4vw, 3.35rem)',
-                fontWeight: 800,
-                color: '#FFFFFF',
-                lineHeight: 1.15,
-                letterSpacing: '-0.03em',
-                marginBottom: '18px',
-              }}
-            >
+            <h1 className="hero-title hero-step" style={{ ['--step' as string]: 2 }}>
               Construo <mark>agentes de IA</mark> que tiram trabalho manual do time.
             </h1>
 
-            <p
-              className="hero-step"
-              style={{
-                ['--step' as string]: 3,
-                fontSize: '1.06rem',
-                color: '#CBD5E1',
-                lineHeight: 1.72,
-                maxWidth: '580px',
-                marginBottom: '28px',
-              }}
-            >
+            <p className="hero-support hero-step" style={{ ['--step' as string]: 3 }}>
               {hero.support}
             </p>
 
-            {/* 3 Provas com rótulo Medido */}
-            <div
-              className="hero-step"
-              style={{
-                ['--step' as string]: 4,
-                display: 'flex',
-                flexWrap: 'wrap',
-                gap: '12px',
-                marginBottom: '32px',
-              }}
-            >
-              {hero.metrics.map((item, i) => (
-                <MetricCard key={i} item={item} />
+            <div className="metric-grid hero-step" style={{ ['--step' as string]: 4 }}>
+              {hero.metrics.map((item) => (
+                <MetricCard key={item.label} item={item} />
               ))}
             </div>
 
-            {/* Botões */}
-            <div
-              className="hero-step"
-              style={{
-                ['--step' as string]: 5,
-                display: 'flex',
-                flexWrap: 'wrap',
-                gap: '12px',
-                alignItems: 'center',
-              }}
-            >
-              <a href="#projetos" className="btn-primary">
+            <div className="btn-row hero-step" style={{ ['--step' as string]: 5 }}>
+              <a href="#projetos" className="btn btn--primary">
                 Ver projetos
                 <svg
                   width="16"
@@ -235,30 +105,19 @@ export default function Hero() {
               </a>
 
               {hasResumePdf && (
-                <a
-                  href={resumeHref}
-                  download
-                  className="btn-secondary"
-                >
+                <a href={resumeHref} download className="btn btn--ghost">
                   Baixar currículo (PDF)
                 </a>
               )}
 
-              <a href="#contato" className="btn-secondary">
+              <a href="#contato" className="btn btn--ghost">
                 Contato
               </a>
             </div>
           </div>
 
-          {/* Coluna Lateral: Simulação do ORAC */}
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <WhatsAppMockup />
+          <div className="hero-aside">
+            <OracChatMock />
           </div>
         </div>
       </div>

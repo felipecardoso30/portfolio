@@ -5,83 +5,31 @@ export default function Skills() {
   const ref = useScrollAnimation();
 
   return (
-    <section
-      id="stack"
-      className="section-ambient"
-      style={{ padding: '80px 24px' }}
-    >
-      <div style={{ maxWidth: '1240px', margin: '0 auto' }}>
+    <section id="stack" className="section section-ambient">
+      <div className="container">
         <div ref={ref} className="fade-in">
-          <div className="section-badge">
-            <span>Stack</span>
-          </div>
+          <header className="section-head">
+            <span className="section-badge">Stack</span>
+            <h2 className="section-title">
+              Ferramentas & <mark>Tecnologias</mark>
+            </h2>
+          </header>
 
-          <h2
-            style={{
-              fontSize: 'clamp(1.8rem, 4vw, 2.6rem)',
-              fontWeight: 800,
-              letterSpacing: '-0.02em',
-              marginBottom: '28px',
-              color: '#FFFFFF',
-              lineHeight: 1.2,
-            }}
-          >
-            Ferramentas & <mark>Tecnologias</mark>
-          </h2>
-
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
-              gap: '20px',
-            }}
-          >
+          <div className="skill-grid">
             {skillCategories.map((cat, i) => (
-              <div
-                key={i}
-                className="card"
-                style={{
-                  padding: '24px',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '14px',
-                }}
-              >
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                  }}
-                >
-                  <h3
-                    style={{
-                      fontSize: '1.08rem',
-                      fontWeight: 700,
-                      color: '#FFFFFF',
-                      margin: 0,
-                    }}
-                  >
-                    {cat.category}
-                  </h3>
-                  <span
-                    style={{
-                      fontSize: '0.78rem',
-                      color: '#EA1D2C',
-                      fontWeight: 700,
-                    }}
-                  >
-                    0{i + 1}
-                  </span>
+              <div key={cat.category} className="card skill-card">
+                <div className="pillar-card__head">
+                  <h3 className="pillar-card__title">{cat.category}</h3>
+                  <span className="pillar-card__num">0{i + 1}</span>
                 </div>
 
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                  {cat.items.map((item, j) => (
-                    <span key={j} className="tag-badge">
+                <ul className="tags" aria-label={cat.category}>
+                  {cat.items.map((item) => (
+                    <li key={item} className="tag">
                       {item}
-                    </span>
+                    </li>
                   ))}
-                </div>
+                </ul>
               </div>
             ))}
           </div>

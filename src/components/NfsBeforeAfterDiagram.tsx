@@ -1,5 +1,20 @@
 import { useEffect, useRef, useState } from 'react';
 
+const NFS_STEPS = [
+  {
+    step: '1. Leitura OCR',
+    detail: 'Extrai nº da NF (ex.: NF-004582), PO, itens e usuário escrito à mão.',
+  },
+  {
+    step: '2. Padronização',
+    detail: 'Renomeia no padrão e salva no SharePoint em conformidade com DLP.',
+  },
+  {
+    step: '3. Notificação',
+    detail: 'Avisa o solicitante no Teams e envia cópia do PDF por e-mail.',
+  },
+];
+
 export default function NfsBeforeAfterDiagram() {
   const ref = useRef<HTMLDivElement | null>(null);
   const [visible, setVisible] = useState<boolean>(() =>
@@ -24,167 +39,52 @@ export default function NfsBeforeAfterDiagram() {
   }, [visible]);
 
   return (
-    <div
-      ref={ref}
-      style={{
-        background: '#07070A',
-        border: '1px solid #21262D',
-        borderRadius: '12px',
-        padding: '16px',
-      }}
-    >
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          gap: '8px',
-          marginBottom: '12px',
-          flexWrap: 'wrap',
-        }}
-      >
-        <span
-          style={{
-            fontSize: '0.74rem',
-            fontWeight: 700,
-            color: '#EA1D2C',
-            textTransform: 'uppercase',
-            letterSpacing: '0.04em',
-          }}
-        >
-          Antes e Depois · Dados Fictícios (NF-000000 · PO-000000)
+    <div ref={ref} className="nfs-diagram">
+      <div className="nfs-diagram__head">
+        <span className="eyebrow">
+          Antes e Depois · Dados Fictícios (NF-004582 · PO-009120)
         </span>
-        <span
-          className="metric-tag"
-          style={{
-            fontSize: '0.7rem',
-            fontWeight: 700,
-            color: '#EA1D2C',
-            background: 'rgba(234, 29, 44, 0.12)',
-            border: '1px solid rgba(234, 29, 44, 0.35)',
-            padding: '2px 8px',
-            borderRadius: '9999px',
-          }}
-        >
-          Observado no meu uso
-        </span>
+        <span className="pill pill--accent pill--sm">Observado no meu uso</span>
       </div>
 
-      {/* Barras comparativas Antes x Depois */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '14px' }}>
-        <div>
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              fontSize: '0.78rem',
-              color: '#CBD5E1',
-              marginBottom: '4px',
-            }}
-          >
-            <span>Antes (manual: abrir PDF, renomear, subir e mover)</span>
-            <strong style={{ color: '#FFFFFF' }}>~8 min / nota</strong>
+      <div className="nfs-diagram__bars">
+        <div className="nfs-bar">
+          <div className="nfs-bar__label">
+            <span>Antes (manual: escanear, abrir PDF, renomear, subir e mover)</span>
+            <strong>~8 min / nota</strong>
           </div>
-          <div
-            style={{
-              height: '10px',
-              background: '#161B22',
-              borderRadius: '9999px',
-              overflow: 'hidden',
-            }}
-          >
+          <div className="nfs-bar__track">
             <div
-              style={{
-                width: '100%',
-                height: '100%',
-                background: '#30363D',
-                transformOrigin: 'left',
-                transform: visible ? 'scaleX(1)' : 'scaleX(0)',
-                transition: 'transform 600ms cubic-bezier(0.22, 1, 0.36, 1)',
-              }}
+              className={`nfs-bar__fill nfs-bar__fill--before ${
+                visible ? 'is-visible' : ''
+              }`}
             />
           </div>
         </div>
 
-        <div>
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              fontSize: '0.78rem',
-              color: '#CBD5E1',
-              marginBottom: '4px',
-            }}
-          >
+        <div className="nfs-bar">
+          <div className="nfs-bar__label">
             <span>Depois (Power Automate + AI Builder OCR)</span>
-            <strong style={{ color: '#EA1D2C' }}>~15 s / nota (~97% menos)</strong>
+            <strong className="text-accent">~15 s / nota (~97% menos)</strong>
           </div>
-          <div
-            style={{
-              height: '10px',
-              background: '#161B22',
-              borderRadius: '9999px',
-              overflow: 'hidden',
-            }}
-          >
+          <div className="nfs-bar__track">
             <div
-              style={{
-                width: '6%',
-                minWidth: '14px',
-                height: '100%',
-                background: '#EA1D2C',
-                transformOrigin: 'left',
-                transform: visible ? 'scaleX(1)' : 'scaleX(0)',
-                transition: 'transform 600ms cubic-bezier(0.22, 1, 0.36, 1) 120ms',
-              }}
+              className={`nfs-bar__fill nfs-bar__fill--after ${
+                visible ? 'is-visible' : ''
+              }`}
             />
           </div>
         </div>
       </div>
 
-      {/* Etapas com dados fictícios */}
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))',
-          gap: '8px',
-          fontSize: '0.74rem',
-        }}
-      >
-        <div
-          style={{
-            background: '#0E1217',
-            border: '1px solid #21262D',
-            borderRadius: '8px',
-            padding: '8px 10px',
-          }}
-        >
-          <div style={{ color: '#EA1D2C', fontWeight: 700 }}>1. Leitura OCR</div>
-          <div style={{ color: '#8B949E' }}>NF-000000 · PO-000000 e usuário à mão</div>
-        </div>
-        <div
-          style={{
-            background: '#0E1217',
-            border: '1px solid #21262D',
-            borderRadius: '8px',
-            padding: '8px 10px',
-          }}
-        >
-          <div style={{ color: '#EA1D2C', fontWeight: 700 }}>2. Padronização</div>
-          <div style={{ color: '#8B949E' }}>Renomeia e salva no SharePoint (DLP)</div>
-        </div>
-        <div
-          style={{
-            background: '#0E1217',
-            border: '1px solid #21262D',
-            borderRadius: '8px',
-            padding: '8px 10px',
-          }}
-        >
-          <div style={{ color: '#EA1D2C', fontWeight: 700 }}>3. Notificação</div>
-          <div style={{ color: '#8B949E' }}>Avisa no Teams e envia PDF por e-mail</div>
-        </div>
-      </div>
+      <ol className="nfs-diagram__steps">
+        {NFS_STEPS.map((item) => (
+          <li key={item.step} className="nfs-step">
+            <strong className="nfs-step__title">{item.step}</strong>
+            <span className="nfs-step__detail">{item.detail}</span>
+          </li>
+        ))}
+      </ol>
     </div>
   );
 }

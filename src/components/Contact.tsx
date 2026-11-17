@@ -44,121 +44,50 @@ export default function Contact() {
   const { available: hasResumePdf, href: resumeHref } = useResumePdf();
 
   return (
-    <section
-      id="contato"
-      className="section-ambient"
-      style={{ padding: '80px 24px' }}
-    >
-      <div style={{ maxWidth: '1240px', margin: '0 auto' }}>
+    <section id="contato" className="section section-ambient">
+      <div className="container">
         <div ref={ref} className="fade-in">
-          <div className="section-badge">
-            <span>Contato</span>
-          </div>
+          <header className="section-head">
+            <span className="section-badge">Contato</span>
+            <h2 className="section-title">
+              Vamos <mark>conversar?</mark>
+            </h2>
+            <p className="section-lead">
+              Baseado em <strong>{LOCATION}</strong>. Entre em contato diretamente por
+              WhatsApp, e-mail ou LinkedIn.
+            </p>
+          </header>
 
-          <h2
-            style={{
-              fontSize: 'clamp(1.9rem, 4vw, 2.8rem)',
-              fontWeight: 800,
-              letterSpacing: '-0.02em',
-              marginBottom: '14px',
-              color: '#FFFFFF',
-              lineHeight: 1.15,
-            }}
-          >
-            Vamos <mark>conversar?</mark>
-          </h2>
-
-          <p
-            style={{
-              color: '#8B949E',
-              fontSize: '1.04rem',
-              maxWidth: '640px',
-              lineHeight: 1.7,
-              marginBottom: '36px',
-            }}
-          >
-            Baseado em <strong style={{ color: '#CBD5E1' }}>{LOCATION}</strong>. Entre em
-            contato diretamente por WhatsApp, e-mail ou LinkedIn.
-          </p>
-
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
-              gap: '20px',
-              marginBottom: '32px',
-            }}
-          >
+          <div className="contact-grid">
             {contacts.map((c) => (
               <a
                 key={c.label}
                 href={c.href}
                 target={c.external ? '_blank' : undefined}
                 rel={c.external ? 'noopener noreferrer' : undefined}
-                className="card card--interactive"
-                style={{
-                  padding: '24px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '16px',
-                  textDecoration: 'none',
-                  color: '#FFFFFF',
-                }}
+                className="card card--interactive contact-card"
               >
-                <span
-                  style={{
-                    color: '#EA1D2C',
-                    background: 'rgba(234, 29, 44, 0.1)',
-                    border: '1px solid rgba(234, 29, 44, 0.25)',
-                    width: '48px',
-                    height: '48px',
-                    borderRadius: '12px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    flexShrink: 0,
-                  }}
-                >
-                  {c.icon}
-                </span>
-
-                <div style={{ minWidth: 0 }}>
-                  <div style={{ fontWeight: 700, fontSize: '1.02rem', color: '#FFFFFF' }}>
-                    {c.label}
-                  </div>
-                  <div
-                    style={{
-                      color: '#8B949E',
-                      fontSize: '0.86rem',
-                      marginTop: '3px',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'nowrap',
-                    }}
-                  >
-                    {c.detail}
-                  </div>
+                <span className="contact-card__icon">{c.icon}</span>
+                <div className="contact-card__body">
+                  <div className="contact-card__label">{c.label}</div>
+                  <div className="contact-card__detail">{c.detail}</div>
                 </div>
               </a>
             ))}
           </div>
 
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px' }}>
+          <div className="btn-row">
             <a
               href={WHATSAPP_LINK}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-primary"
+              className="btn btn--primary"
             >
               Chamar no WhatsApp
             </a>
 
             {hasResumePdf && (
-              <a
-                href={resumeHref}
-                download
-                className="btn-secondary"
-              >
+              <a href={resumeHref} download className="btn btn--ghost">
                 Baixar currículo (PDF)
               </a>
             )}
