@@ -22,7 +22,7 @@ function LazyLoopVideo({
   title,
 }: {
   src: string;
-  poster: string;
+  poster?: string;
   title: string;
 }) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -59,7 +59,7 @@ function LazyLoopVideo({
       loop
       playsInline
       controls={reduced}
-      preload="none"
+      preload={poster ? 'none' : 'metadata'}
       width={1280}
       height={612}
       aria-label={`Gravação do fluxo: ${title}`}
@@ -75,7 +75,7 @@ function FeaturedMedia({ project }: { project: Project }) {
           <div className="video-showcase__bar">
             <span className="dot dot--accent" aria-hidden="true" />
             <span className="video-showcase__label">
-              Execução do Fluxo · Power Automate
+              {project.video.label ?? 'Execução do Fluxo · Power Automate'}
             </span>
           </div>
           <LazyLoopVideo
@@ -84,6 +84,7 @@ function FeaturedMedia({ project }: { project: Project }) {
             title={project.titulo}
           />
         </div>
+        {project.tipoVisual === 'orac-flow' && <OracFlowDiagram />}
         {project.tipoVisual === 'nfs-before-after' && <NfsBeforeAfterDiagram />}
       </div>
     );

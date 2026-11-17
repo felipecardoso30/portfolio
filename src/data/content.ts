@@ -91,7 +91,7 @@ export interface Project {
   resultados?: ProjectResult[];
   limitacoes?: string;
   tipoVisual?: "orac-flow" | "nfs-before-after" | "gallery" | "diagram";
-  video?: { src: string; poster: string };
+  video?: { src: string; poster?: string; label?: string };
   galeria: ProjectImage[];
   diagrama: string;
 }
@@ -146,6 +146,10 @@ export const projects: Project[] = [
     limitacoes:
       "O tempo de resposta varia conforme o caso; estou testando a arquitetura (tópicos ou subagentes) para gastar menos tokens.",
     tipoVisual: "orac-flow",
+    video: {
+      src: "/videos/orac.mp4",
+      label: "Demonstração do ORAC · Copilot Studio & Teams",
+    },
     galeria: [],
     diagrama: `[Teams: Analista] ──> [ORAC (Copilot Studio · Tópicos)] ──> [Power Automate + Fabric SQL (+16 mil KBs) + SOPs] ──> [Subagentes P1/P2 & Work Notes] ──> [Confirmação Sim/Não] ──> [ServiceNow]`,
   },
