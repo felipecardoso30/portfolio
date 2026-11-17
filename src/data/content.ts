@@ -31,7 +31,7 @@ export const hero = {
   badge: "Estagiário de TI · Sistemas de Informação (UFRA) · Belém, PA",
   promise: "Construo agentes de IA que tiram trabalho manual do time.",
   support:
-    "Estagiário de TI no Hydro e estudante de Sistemas de Informação (UFRA). Em IT Operations, projetei e construí agentes e automações por iniciativa própria.",
+    "Em IT Operations, projetei e construí agentes e automações por iniciativa própria.",
   metrics: [
     {
       valueText: "+340",
@@ -386,6 +386,7 @@ export interface ExperienceItem {
   department?: string;
   period: string;
   summary: string;
+  bullets: string[];
 }
 
 export const experiences: ExperienceItem[] = [
@@ -393,26 +394,48 @@ export const experiences: ExperienceItem[] = [
     id: "hydro",
     company: "Hydro",
     role: "Estagiário de TI",
-    department: "GBS Global IT Support South America",
+    department: "GBS Global IT Support South America · Belém",
     period: "05/2026 – Presente",
     summary:
       "+340 tickets resolvidos em 6 meses com 97,6% de SLA no ServiceNow; suporte e gerenciamento de endpoints (Intune, SCCM, Entra ID); PC Refresh 2026 (43 de 118 notebooks); piloto de redesign de RBAC no Intune; implantação de videoconferência em 5 andares.",
+    bullets: [
+      "+340 tickets resolvidos em 6 meses com 97,6% de SLA no ServiceNow.",
+      "Suporte e gerenciamento de endpoints (Intune, SCCM, Entra ID).",
+      "PC Refresh 2026 (43 de 118 notebooks).",
+      "Piloto de redesign de RBAC no Intune.",
+      "Implantação de videoconferência em 5 andares.",
+    ],
   },
   {
     id: "crea-pa",
     company: "CREA-PA",
-    role: "Estagiário de TI",
+    role: "Estagiário de Tecnologia da Informação",
+    department: "Conselho Regional de Engenharia e Agronomia do Pará · Belém",
     period: "02/2025 – 04/2026",
     summary:
-      "Suporte a usuários em Windows, Linux e iOS; gerenciamento de chamados internos.",
+      "Desenvolvimento do CreaAI no WhatsApp, suporte técnico a 200 usuários em Windows, Linux e iOS, gestão de chamados e manutenção de mais de 150 equipamentos e redes.",
+    bullets: [
+      "Desenvolvi o CreaAI, atendente virtual com IA no WhatsApp que atende cerca de 40 conversas por dia, responde às dúvidas dos usuários e eliminou esperas de até 1 dia por retorno.",
+      "Prestei suporte técnico a cerca de 200 usuários em todas as sedes do conselho, em ambientes Windows, Linux e iOS.",
+      "Gerenciei em média 60 chamados por mês, com triagem, priorização e acompanhamento até o fechamento.",
+      "Instalei, configurei e mantive mais de 150 equipamentos (computadores, impressoras e periféricos), com manutenção preventiva e corretiva de hardware.",
+      "Diagnostiquei e resolvi falhas de rede e conectividade, garantindo a continuidade das atividades dos setores.",
+    ],
   },
   {
     id: "ifpa",
     company: "IFPA",
-    role: "Monitor de laboratório",
+    role: "Monitor de Laboratório de Informática",
+    department: "Instituto Federal do Pará · Ananindeua",
     period: "03/2023 – 12/2023",
     summary:
-      "Instalação e manutenção de sistemas, hardware e redes locais.",
+      "Instalação e configuração de sistemas, manutenção de hardware e redes locais, suporte a alunos e professores e documentação técnica.",
+    bullets: [
+      "Instalei e configurei sistemas operacionais e aplicativos, mantendo o laboratório pronto para as aulas.",
+      "Realizei manutenção de hardware e de redes locais, resolvendo falhas de conectividade.",
+      "Atendi alunos e professores no suporte técnico e apliquei rotinas básicas de segurança da informação.",
+      "Produzi documentação técnica de procedimentos e soluções recorrentes.",
+    ],
   },
 ];
 
@@ -465,12 +488,12 @@ export const skillCategories = [
 
 export const about = {
   resumo:
-    "Estagiário de TI no Hydro (GBS Global IT Support South America) e estudante de Sistemas de Informação na UFRA. Atuo na operação de suporte corporativo e construo agentes de IA e automações práticas por iniciativa própria.",
+    "Atuo na operação de suporte corporativo no Hydro (GBS Global IT Support South America) e construo agentes de IA e automações práticas por iniciativa própria.",
   education: [
     {
       institution: "UFRA — Universidade Federal Rural da Amazônia",
       degree: "Bacharelado em Sistemas de Informação",
-      period: "08/2024 – conclusão prevista: início de 2028",
+      period: "08/2024 – 2028 (previsto)",
     },
     {
       institution: "IFPA — Instituto Federal do Pará",
@@ -480,7 +503,7 @@ export const about = {
   ],
   languages: [
     { name: "Português", level: "Nativo" },
-    { name: "Inglês", level: "Em desenvolvimento (Minds School)" },
+    { name: "Inglês", level: "Intermediário (cursando)" },
   ],
 };
 

@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import { useResumePdf } from '../hooks/useResumePdf';
 import { hero, NOME, type HeroMetric } from '../data/content';
-import OracChatMock from './OracChatMock';
 
 function useCountUp(target: number, decimals = 0, durationMs = 850) {
   const [value, setValue] = useState<number>(() =>
@@ -48,7 +47,7 @@ function MetricCard({ item }: { item: HeroMetric }) {
         <span aria-label={item.valueText} className="metric-card__value">
           <span aria-hidden="true">{formatted}</span>
         </span>
-        <span className="pill pill--accent pill--sm">{item.classification}</span>
+        <span className="pill pill--sm">{item.classification}</span>
       </div>
       <span className="metric-card__label">{item.label}</span>
     </div>
@@ -65,7 +64,7 @@ export default function Hero() {
         <div ref={ref} className="fade-in hero-grid">
           <div className="hero-content">
             <div className="section-badge hero-step" style={{ ['--step' as string]: 0 }}>
-              <span className="dot dot--accent" aria-hidden="true" />
+              <span className="dot" aria-hidden="true" />
               <span>{hero.badge}</span>
             </div>
 
@@ -81,13 +80,7 @@ export default function Hero() {
               {hero.support}
             </p>
 
-            <div className="metric-grid hero-step" style={{ ['--step' as string]: 4 }}>
-              {hero.metrics.map((item) => (
-                <MetricCard key={item.label} item={item} />
-              ))}
-            </div>
-
-            <div className="btn-row hero-step" style={{ ['--step' as string]: 5 }}>
+            <div className="btn-row hero-step" style={{ ['--step' as string]: 4 }}>
               <a href="#projetos" className="btn btn--primary">
                 <span>Ver projetos</span>
                 <svg
@@ -130,8 +123,12 @@ export default function Hero() {
             </div>
           </div>
 
-          <div className="hero-aside">
-            <OracChatMock />
+          <div className="hero-aside hero-step" style={{ ['--step' as string]: 5 }}>
+            <div className="metric-grid">
+              {hero.metrics.map((item) => (
+                <MetricCard key={item.label} item={item} />
+              ))}
+            </div>
           </div>
         </div>
       </div>

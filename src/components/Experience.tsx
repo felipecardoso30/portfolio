@@ -21,7 +21,7 @@ export default function Experience() {
                 <div className="exp-card__head">
                   <div>
                     <h3 className="exp-card__title">
-                      {exp.company} — {exp.role}
+                      {exp.role} — {exp.company}
                     </h3>
                     {exp.department && (
                       <div className="exp-card__dept">{exp.department}</div>
@@ -38,7 +38,11 @@ export default function Experience() {
                   </div>
                 </div>
 
-                <p className="text-body">{exp.summary}</p>
+                <ul className="arrow-list">
+                  {exp.bullets.map((topic) => (
+                    <li key={topic}>{topic}</li>
+                  ))}
+                </ul>
               </article>
             ))}
           </div>

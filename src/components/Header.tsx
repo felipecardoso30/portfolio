@@ -3,13 +3,10 @@ import { LINKEDIN, WHATSAPP_LINK } from '../data/content';
 import { useResumePdf } from '../hooks/useResumePdf';
 
 const navLinks = [
-  { label: 'Topo', href: '#inicio' },
   { label: 'Projetos', href: '#projetos' },
   { label: 'Como construo', href: '#como-construo' },
   { label: 'Experiência', href: '#experiencia' },
-  { label: 'Stack', href: '#stack' },
-  { label: 'Formação', href: '#sobre' },
-  { label: 'Evidências', href: '#evidencias' },
+  { label: 'Skills', href: '#stack' },
   { label: 'Contato', href: '#contato' },
 ];
 
