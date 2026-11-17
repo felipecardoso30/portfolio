@@ -199,9 +199,40 @@ export default function Gallery() {
                   <h3 className="lightbox__title">{activeItem.titulo}</h3>
                 </div>
 
-                <div className="lightbox__controls">
+                <button
+                  ref={closeBtnRef}
+                  type="button"
+                  className="icon-btn"
+                  onClick={() => setActiveIndex(null)}
+                  aria-label="Fechar inspeção (Esc)"
+                >
+                  ✕
+                </button>
+              </header>
+
+              <div className="lightbox__stage">
+                {activeItem.kind === 'orac-diagram' ? (
+                  <OracFlowDiagram />
+                ) : activeItem.kind === 'nfs-diagram' ? (
+                  <NfsBeforeAfterDiagram />
+                ) : (
+                  <img
+                    key={activeItem.src}
+                    src={activeItem.src}
+                    alt={activeItem.legenda}
+                    width={activeItem.width}
+                    height={activeItem.height}
+                    decoding="async"
+                    className="lightbox__img"
+                  />
+                )}
+              </div>
+
+              <footer className="lightbox__footer">
+                <div className="viewer-stage__bar">
+                  <p className="lightbox__caption">{activeItem.legenda}</p>
                   {filteredItems.length > 1 && (
-                    <>
+                    <div className="viewer-stage__nav">
                       <button
                         type="button"
                         className="viewer-nav-btn"
@@ -225,40 +256,9 @@ export default function Gallery() {
                       >
                         Próxima →
                       </button>
-                    </>
+                    </div>
                   )}
-                  <button
-                    ref={closeBtnRef}
-                    type="button"
-                    className="icon-btn"
-                    onClick={() => setActiveIndex(null)}
-                    aria-label="Fechar inspeção (Esc)"
-                  >
-                    ✕
-                  </button>
                 </div>
-              </header>
-
-              <div className="lightbox__stage">
-                {activeItem.kind === 'orac-diagram' ? (
-                  <OracFlowDiagram />
-                ) : activeItem.kind === 'nfs-diagram' ? (
-                  <NfsBeforeAfterDiagram />
-                ) : (
-                  <img
-                    key={activeItem.src}
-                    src={activeItem.src}
-                    alt={activeItem.legenda}
-                    width={activeItem.width}
-                    height={activeItem.height}
-                    decoding="async"
-                    className="lightbox__img"
-                  />
-                )}
-              </div>
-
-              <footer className="lightbox__footer">
-                <p className="lightbox__caption">{activeItem.legenda}</p>
 
                 {filteredItems.length > 1 && (
                   <div
