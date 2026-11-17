@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import {
   projects,
@@ -16,9 +16,59 @@ const prefersReducedMotion = () =>
   typeof window !== 'undefined' &&
   window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+function LazyLoopVideo({
+  src,
+  poster,
+  title,
+}: {
+  src: string;
+  poster: string;
+  title: string;
+}) {
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const reduced = prefersReducedMotion();
+
+  useEffect(() => {
+    const el = videoRef.current;
+    if (!el || reduced) return;
+
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          el.play().catch(() => {
+            /* Autoplay bloqueado pelo navegador */
+          });
+        } else {
+          el.pause();
+        }
+      },
+      { threshold: 0.25 }
+    );
+
+    io.observe(el);
+    return () => io.disconnect();
+  }, [reduced]);
+
+  return (
+    <video
+      ref={videoRef}
+      className="media-frame media-frame--video"
+      src={src}
+      poster={poster}
+      muted
+      loop
+      playsInline
+      controls={reduced}
+      preload="none"
+      width={1280}
+      height={612}
+      aria-label={`Gravação do fluxo: ${title}`}
+    />
+  );
+}
+
 function FeaturedMedia({ project }: { project: Project }) {
   if (project.video) {
-    const reduced = prefersReducedMotion();
     return (
       <div className="featured__media-stack">
         <div className="video-showcase">
@@ -28,19 +78,10 @@ function FeaturedMedia({ project }: { project: Project }) {
               Execução do Fluxo · Power Automate
             </span>
           </div>
-          <video
-            className="media-frame media-frame--video"
+          <LazyLoopVideo
             src={project.video.src}
             poster={project.video.poster}
-            autoPlay={!reduced}
-            muted
-            loop
-            playsInline
-            controls={reduced}
-            preload={reduced ? 'none' : 'metadata'}
-            width={1280}
-            height={612}
-            aria-label={`Gravação do fluxo: ${project.titulo}`}
+            title={project.titulo}
           />
         </div>
         {project.tipoVisual === 'nfs-before-after' && <NfsBeforeAfterDiagram />}
