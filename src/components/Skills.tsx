@@ -9,7 +9,7 @@ export default function Skills() {
       <div className="container">
         <div ref={ref} className="fade-in">
           <header className="section-head">
-            <span className="section-badge">Stack</span>
+            <span className="section-badge">Skills</span>
             <h2 className="section-title">
               Ferramentas & <mark>Tecnologias</mark>
             </h2>
