@@ -1,32 +1,32 @@
-# React + TypeScript + Vite
+# Portfólio — Felipe Cardoso das Neves
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Portfólio profissional de **Felipe Cardoso das Neves** (Estagiário de TI no Hydro e estudante de Sistemas de Informação na UFRA), focado em agentes de IA, automação de processos e operações de TI (IT Operations).
 
-Currently, two official plugins are available:
+## Estrutura do site
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Topo (Hero):** proposta de valor, métricas medidas e simulação interativa do agente **ORAC** (Copilot Studio · Teams) com dados fictícios.
+- **Projetos:** case studies completos com problema, solução, decisões de arquitetura, falha real e correção, validação humana (*human-in-the-loop*) e resultados rotulados por origem (*Medido*, *Observado no meu uso*, *Estimativa*, *Meta projetada*).
+- **Como eu construo:** síntese do método de engenharia de agentes (divisão por função, +50 testes por correção e humano no controle).
+- **Experiência:** histórico resumido no Hydro, CREA-PA e IFPA.
+- **Stack, Formação e Evidências:** tecnologias utilizadas, formação acadêmica e galeria de diagramas e capturas anonimizadas em WebP.
+- **Contato:** links diretos para WhatsApp, e-mail, LinkedIn e download do currículo em PDF (habilitado automaticamente quando `public/curriculo-felipe-cardoso.pdf` está presente).
 
-## React Compiler
+## Tecnologias
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- React 19 + TypeScript
+- Vite 8
+- Tailwind CSS 4
 
-## Expanding the Oxlint configuration
+## Como executar localmente
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```bash
+npm install
+npm run dev
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+## Build e verificação
+
+```bash
+npm run lint
+npm run build
+```
