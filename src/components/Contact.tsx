@@ -95,7 +95,7 @@ export default function Contact() {
                 href={c.href}
                 target={c.external ? '_blank' : undefined}
                 rel={c.external ? 'noopener noreferrer' : undefined}
-                className="card"
+                className="card card--interactive"
                 style={{
                   padding: '24px',
                   display: 'flex',

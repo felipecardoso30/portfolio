@@ -91,6 +91,7 @@ export interface Project {
   resultados?: ProjectResult[];
   limitacoes?: string;
   tipoVisual?: "orac-flow" | "nfs-before-after" | "gallery" | "diagram";
+  video?: { src: string; poster: string };
   galeria: ProjectImage[];
   diagrama: string;
 }
@@ -299,7 +300,26 @@ export const projects: Project[] = [
       },
     ],
     tipoVisual: "nfs-before-after",
-    galeria: [],
+    video: {
+      src: "/videos/automacao-nf-dell.mp4",
+      poster: "/videos/automacao-nf-dell-poster.webp",
+    },
+    galeria: [
+      {
+        src: "/images/nfs-fluxo-parte1.webp",
+        legenda:
+          "Fluxo no Power Automate: gatilho de e-mail, AI Builder (Process invoices e OCR) e extração do número da NF e da ordem de compra.",
+        width: 1024,
+        height: 760,
+      },
+      {
+        src: "/images/nfs-fluxo-parte2.webp",
+        legenda:
+          "Continuação do fluxo: dados do solicitante, criação do arquivo no SharePoint, aviso no Teams e envio por e-mail.",
+        width: 1024,
+        height: 779,
+      },
+    ],
     diagrama: `[PDF Digitalizado (NF-000000 · Fictício)] ──> [Power Automate] ──> [AI Builder (OCR): Nº NF, PO, Itens e Usuário à mão] ──> [SharePoint] ──> [Teams + E-mail no Outlook]`,
   },
   {
