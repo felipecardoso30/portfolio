@@ -6,50 +6,34 @@ export default function Skills() {
 
   return (
     <section
-      id="habilidades"
+      id="stack"
       className="section-ambient"
-      style={{ padding: '96px 24px' }}
+      style={{ padding: '80px 24px' }}
     >
       <div style={{ maxWidth: '1240px', margin: '0 auto' }}>
         <div ref={ref} className="fade-in">
-          {/* Badge */}
           <div className="section-badge">
-            <span>Tecnologias & Ferramentas</span>
+            <span>Stack</span>
           </div>
 
-          {/* Title */}
           <h2
             style={{
-              fontSize: 'clamp(1.8rem, 4vw, 2.8rem)',
+              fontSize: 'clamp(1.8rem, 4vw, 2.6rem)',
               fontWeight: 800,
               letterSpacing: '-0.02em',
-              marginBottom: '16px',
+              marginBottom: '28px',
               color: '#FFFFFF',
               lineHeight: 1.2,
             }}
           >
-            Tecnologias que uso <mark>no dia a dia</mark>
+            Ferramentas & <mark>Tecnologias</mark>
           </h2>
 
-          <p
-            style={{
-              color: '#8B949E',
-              fontSize: '1.05rem',
-              lineHeight: 1.7,
-              maxWidth: '750px',
-              marginBottom: '48px',
-            }}
-          >
-            Ecossistema técnico aplicado em produção para suporte corporativo, automação inteligente de processos
-            e orquestração de inteligência artificial generativa.
-          </p>
-
-          {/* Skills Grid */}
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-              gap: '24px',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+              gap: '20px',
             }}
           >
             {skillCategories.map((cat, i) => (
@@ -57,10 +41,10 @@ export default function Skills() {
                 key={i}
                 className="card"
                 style={{
-                  padding: '28px',
+                  padding: '24px',
                   display: 'flex',
                   flexDirection: 'column',
-                  gap: '16px',
+                  gap: '14px',
                 }}
               >
                 <div
@@ -72,7 +56,7 @@ export default function Skills() {
                 >
                   <h3
                     style={{
-                      fontSize: '1.1rem',
+                      fontSize: '1.08rem',
                       fontWeight: 700,
                       color: '#FFFFFF',
                       margin: 0,
@@ -82,7 +66,7 @@ export default function Skills() {
                   </h3>
                   <span
                     style={{
-                      fontSize: '0.8rem',
+                      fontSize: '0.78rem',
                       color: '#EA1D2C',
                       fontWeight: 700,
                     }}
