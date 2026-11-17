@@ -1,53 +1,461 @@
-// ============================================================
-// INFORMAÇÕES PESSOAIS & CONTATO (DO CURRÍCULO)
-// ============================================================
 export const NOME = "Felipe Cardoso das Neves";
-export const CARGO = "Estagiário de TI | Agentes de IA e Automação";
+export const CARGO = "Estagiário de TI · IA e Automação em IT Operations";
 export const LOCATION = "Belém, PA";
 export const EMAIL = "felipecardoso3005@gmail.com";
 export const WHATSAPP = "5591987382169";
 export const LINKEDIN = "https://linkedin.com/in/felipe-cardoso-1425652a9";
-export const CURRICULO_PDF = "#contato";
+export const CURRICULO_PATH = "/curriculo-felipe-cardoso.pdf";
 
 export const WHATSAPP_MSG = encodeURIComponent(
-  "Olá, Felipe! Vi seu portfólio e gostaria de conversar sobre oportunidades em IA e Automação."
+  "Olá, Felipe! Vi seu portfólio e gostaria de conversar."
 );
 export const WHATSAPP_LINK = `https://wa.me/${WHATSAPP}?text=${WHATSAPP_MSG}`;
 
-// ============================================================
-// HERO
-// ============================================================
+export type MetricLabel =
+  | "Medido"
+  | "Observado no meu uso"
+  | "Estimativa"
+  | "Meta projetada";
+
+export interface HeroMetric {
+  valueText: string;
+  numericTarget: number;
+  prefix?: string;
+  suffix?: string;
+  decimals?: number;
+  label: string;
+  classification: MetricLabel;
+}
+
 export const hero = {
-  badge: "Disponível para novas oportunidades • Belém, PA",
-  title: "Felipe Cardoso das Neves",
-  role: "IA e Automação em IT Operations",
-  description:
-    "Estudante de Sistemas de Informação e estagiário de TI na Hydro. Por iniciativa própria, construo agentes de IA e automações que substituem trabalho manual, aceleram atendimentos e padronizam operações corporativas.",
-  highlights: [
-    { label: "Tickets resolvidos (Hydro)", value: "+340" },
-    { label: "SLA no ServiceNow", value: "97,6%" },
-    { label: "Agentes de IA entregues", value: "4+" },
+  badge: "Estagiário de TI · Sistemas de Informação (UFRA) · Belém, PA",
+  promise: "Construo agentes de IA que tiram trabalho manual do time.",
+  support:
+    "Estagiário de TI no Hydro e estudante de Sistemas de Informação (UFRA). Em IT Operations, projetei e construí agentes e automações por iniciativa própria.",
+  metrics: [
+    {
+      valueText: "+340",
+      numericTarget: 340,
+      prefix: "+",
+      decimals: 0,
+      label: "tickets resolvidos em 6 meses",
+      classification: "Medido" as MetricLabel,
+    },
+    {
+      valueText: "97,6%",
+      numericTarget: 97.6,
+      suffix: "%",
+      decimals: 1,
+      label: "de SLA",
+      classification: "Medido" as MetricLabel,
+    },
+    {
+      valueText: "4",
+      numericTarget: 4,
+      decimals: 0,
+      label: "agentes entregues",
+      classification: "Medido" as MetricLabel,
+    },
+  ] satisfies HeroMetric[],
+};
+
+export interface ProjectImage {
+  src: string;
+  legenda: string;
+  width: number;
+  height: number;
+}
+
+export interface ProjectFailureFix {
+  oQueAconteceu: string;
+  causa: string;
+  correcao: string;
+  efeito: string;
+}
+
+export interface ProjectResult {
+  texto: string;
+  rotulo?: MetricLabel;
+}
+
+export interface Project {
+  id: string;
+  titulo: string;
+  status: string;
+  iniciativa?: string;
+  stack: string[];
+  problema: string;
+  solucao: string;
+  decisoes?: string[];
+  falhaCorrecao?: ProjectFailureFix;
+  resultados?: ProjectResult[];
+  limitacoes?: string;
+  tipoVisual?: "orac-flow" | "nfs-before-after" | "gallery" | "diagram";
+  galeria: ProjectImage[];
+  diagrama: string;
+}
+
+export interface CompactProject {
+  id: string;
+  titulo: string;
+  status: string;
+  stack: string[];
+  descricao: string;
+}
+
+export const projects: Project[] = [
+  {
+    id: "orac",
+    titulo: "ORAC — Agente de IA para IT Operations",
+    status: "Publicado · em melhoria contínua",
+    iniciativa: "Iniciativa própria, fora do escopo do cargo de suporte",
+    stack: [
+      "Copilot Studio",
+      "GPT",
+      "Power Automate",
+      "Microsoft Fabric (SQL)",
+      "ServiceNow",
+      "Teams",
+    ],
+    problema:
+      "Para investigar e documentar cada ticket, o analista alternava entre ServiceNow, base de KBs, SOPs e documentos.",
+    solucao:
+      "Agente no Microsoft Teams que consulta tickets do ServiceNow via Power Automate, pesquisa mais de 16 mil KBs no Fabric (SQL) e SOPs, gera work notes e comentários padronizados e prepara escalonamentos P1/P2. Um Health Score (0–100) ajuda a priorizar o backlog.",
+    decisoes: [
+      "Agente principal com subagentes por função (escalonamento P1/P2 e work notes), para manter cada instrução curta e específica.",
+      "O agente fecha chamados resolvidos somente depois que o analista confirma por botões Sim/Não (humano no controle).",
+    ],
+    falhaCorrecao: {
+      oQueAconteceu:
+        "Ao gerar comentários para tickets em estados diferentes (On Hold, Awaiting Caller, In Progress), o agente perguntava o status mesmo quando eu já tinha informado ou quando o contexto da conversa já mostrava.",
+      causa:
+        "O prompt principal não tinha regras e prioridades claras por tipo de comentário.",
+      correcao:
+        "Defini regras e prioridades em formato Markdown nos prompts e dividi a lógica em tópicos do Copilot Studio. O prompt principal chama o tópico certo, e o prompt de cada tópico é restrito e específico, o que evita respostas inventadas.",
+      efeito:
+        "O agente deixou de repetir a pergunta de status. Validei com mais de 50 testes.",
+    },
+    resultados: [
+      {
+        texto:
+          "Cerca de 20 min economizados por ticket, variando com o caso (maior ganho em problemas internos que não estão na web, já foram resolvidos por outra pessoa e estão na base do agente).",
+        rotulo: "Observado no meu uso",
+      },
+    ],
+    limitacoes:
+      "O tempo de resposta varia conforme o caso; estou testando a arquitetura (tópicos ou subagentes) para gastar menos tokens.",
+    tipoVisual: "orac-flow",
+    galeria: [],
+    diagrama: `[Teams: Analista] ──> [ORAC (Copilot Studio · Tópicos)] ──> [Power Automate + Fabric SQL (+16 mil KBs) + SOPs] ──> [Subagentes P1/P2 & Work Notes] ──> [Confirmação Sim/Não] ──> [ServiceNow]`,
+  },
+  {
+    id: "clinica",
+    titulo: "Agente de agendamento para clínica dermatológica",
+    status: "Entregue em 2025 · desativado",
+    stack: ["n8n", "MCP (servidor)", "Google Calendar", "WhatsApp", "LLM"],
+    problema:
+      "Agendar consultas por WhatsApp, incluindo mensagens de áudio e imagem, sem marcar horários em conflito.",
+    solucao:
+      "Agente que transcreve áudios, analisa imagens, informa horários disponíveis, confirma os dados do paciente antes de agendar, marca e consulta horários no Google Calendar por um servidor MCP, envia a confirmação com local e orientações, pede confirmação de presença e avisa a clínica a cada consulta. Há uma ferramenta para acionar um humano.",
+    decisoes: [
+      "Subagente exclusivo para agendamentos, usando o modelo de linguagem mais avançado que eu tinha, para entender bem mensagem e contexto; o agente principal só conversa e delega.",
+    ],
+    falhaCorrecao: {
+      oQueAconteceu: "O agente marcava data e hora de consulta erradas.",
+      causa: "O prompt do agente principal tinha ficado grande demais.",
+      correcao:
+        "Criei um subagente só para agendamentos, com o modelo mais avançado, para entender a mensagem e o contexto e marcar a data e o horário certos no Google Agenda.",
+      efeito:
+        "Os agendamentos passaram a sair com data e hora corretas. Validei com mais de 50 testes.",
+    },
+    resultados: [
+      {
+        texto:
+          "Validação do horário no Google Calendar antes de confirmar. Sem número medido de uso em produção.",
+      },
+    ],
+    tipoVisual: "gallery",
+    galeria: [
+      {
+        src: "/images/clinica-fluxo-n8n.webp",
+        legenda:
+          "Fluxo em n8n com tratamento de áudio/imagem, agente principal, subagente de agendamentos e servidor MCP.",
+        width: 1024,
+        height: 481,
+      },
+      {
+        src: "/images/clinica-horarios.webp",
+        legenda:
+          "Consulta de horários disponíveis no WhatsApp (cabeçalho da clínica anonimizado e dados de teste próprios).",
+        width: 1024,
+        height: 649,
+      },
+      {
+        src: "/images/clinica-dados.webp",
+        legenda:
+          "Confirmação dos dados antes de gravar o agendamento no Google Calendar.",
+        width: 1024,
+        height: 589,
+      },
+      {
+        src: "/images/clinica-agendamento.webp",
+        legenda:
+          "Registro da consulta e aviso automático enviado à clínica (cabeçalho anonimizado).",
+        width: 1024,
+        height: 665,
+      },
+      {
+        src: "/images/clinica-confirmacao.webp",
+        legenda:
+          "Orientações pré-consulta e confirmação de presença pelo paciente (endereço anonimizado).",
+        width: 1024,
+        height: 531,
+      },
+    ],
+    diagrama: `[WhatsApp (Texto/Áudio/Imagem)] ──> [n8n: Agente Principal] ──> [Subagente de Agendamentos] ──> [Servidor MCP ──> Google Calendar] ──> [Confirmação + Aviso à Clínica]`,
+  },
+  {
+    id: "creaai",
+    titulo: "CreaAI — Atendente virtual do CREA-PA",
+    status: "Entregue em 2025 · desativado",
+    stack: [
+      "n8n",
+      "RAG (Supabase Vector Store + embeddings OpenAI)",
+      "Redis",
+      "WhatsApp",
+    ],
+    problema:
+      "O atendimento recebia perguntas repetitivas sobre anuidade e emissão de ART.",
+    solucao:
+      "Atendente no WhatsApp com base de conhecimento vetorial, memória de conversa em Redis, transcrição de áudio e análise de imagem, junção de mensagens cortadas, resposta dividida em mensagens menores e ferramenta para chamar um atendente humano. Responde sobre valores de anuidade e explica a ART com passo a passo e link do sistema.",
+    falhaCorrecao: {
+      oQueAconteceu:
+        "O atendente repetia mensagens ao cliente e voltava a perguntar nome e dados a cada mensagem nova.",
+      causa:
+        "O agente não tinha uma referência estável do que já havia sido informado.",
+      correcao:
+        "Criei variáveis para esses dados e as passei em JSON entre as etapas dos fluxos do n8n, para o agente sempre ter a referência.",
+      efeito:
+        "O atendimento deixou de repetir perguntas. Validei com mais de 50 testes.",
+    },
+    tipoVisual: "gallery",
+    galeria: [
+      {
+        src: "/images/crea-fluxo-n8n.webp",
+        legenda:
+          "Fluxo no n8n com variáveis em JSON, memória Redis, Supabase Vector Store e embeddings OpenAI.",
+        width: 1024,
+        height: 549,
+      },
+      {
+        src: "/images/crea-anuidade.webp",
+        legenda:
+          "Resposta sobre valores de anuidade e faixas de desconto no WhatsApp.",
+        width: 1024,
+        height: 674,
+      },
+      {
+        src: "/images/crea-art.webp",
+        legenda:
+          "Explicação sobre a obrigatoriedade da ART e link para o sistema.",
+        width: 1024,
+        height: 733,
+      },
+      {
+        src: "/images/crea-passo-a-passo.webp",
+        legenda:
+          "Passo a passo para emissão de ART e orientação de encaminhamento a atendente humano.",
+        width: 1024,
+        height: 726,
+      },
+    ],
+    diagrama: `[WhatsApp (Texto/Áudio/Imagem)] ──> [n8n + Variáveis JSON + Memória Redis] ──> [RAG: Supabase Vector Store + Embeddings OpenAI] ──> [Resposta Dividida / Atendente Humano]`,
+  },
+  {
+    id: "nfs",
+    titulo: "Automação de Notas Fiscais Dell",
+    status: "Publicado · em uso no Hydro",
+    iniciativa: "Iniciativa própria",
+    stack: [
+      "Power Automate",
+      "AI Builder (OCR)",
+      "SharePoint",
+      "Teams",
+      "Outlook",
+    ],
+    problema:
+      "Cada nota fiscal digitalizada exigia escanear, abrir o PDF, renomear no padrão, subir no SharePoint e mover para a pasta de enviadas.",
+    solucao:
+      "Fluxo que recebe as notas digitalizadas, lê o PDF com IA (OCR), extrai número da NF, ordem de compra, itens e o usuário escrito à mão, renomeia o arquivo, salva no SharePoint, avisa o solicitante no Teams e envia o PDF por e-mail. Usa apenas ferramentas Microsoft já disponíveis, em conformidade com a política de DLP.",
+    resultados: [
+      {
+        texto: "Tempo por nota: de ~8 min para ~15 s (~97% menos).",
+        rotulo: "Observado no meu uso",
+      },
+      {
+        texto:
+          "~31 h por ano liberadas (~20 notas por mês × 12 × ~7 min 45 s).",
+        rotulo: "Estimativa",
+      },
+    ],
+    tipoVisual: "nfs-before-after",
+    galeria: [],
+    diagrama: `[PDF Digitalizado (NF-000000 · Fictício)] ──> [Power Automate] ──> [AI Builder (OCR): Nº NF, PO, Itens e Usuário à mão] ──> [SharePoint] ──> [Teams + E-mail no Outlook]`,
+  },
+  {
+    id: "tiinforma",
+    titulo: "TI Informa — Agente de comunicados de TI",
+    status: "Em desenvolvimento",
+    iniciativa: "Iniciativa própria",
+    stack: ["Copilot Studio", "Power Automate", "Outlook"],
+    problema:
+      "Comunicados de queda de link e indisponibilidade levavam tempo para redigir e saíam sem padrão.",
+    solucao:
+      "Agente que identifica o tipo de ocorrência, escolhe o modelo a partir do histórico de comunicados e gera o texto, com validação do solicitante antes do envio.",
+    resultados: [
+      {
+        texto: "De 10–20 min para 2–5 min por comunicado.",
+        rotulo: "Meta projetada",
+      },
+    ],
+    limitacoes: "Publicação automática após a aprovação (planejada).",
+    tipoVisual: "diagram",
+    galeria: [],
+    diagrama: `[Ocorrência de TI] ──> [Copilot Studio + Histórico de Comunicados] ──> [Texto Gerado no Padrão] ──> [Validação do Solicitante] ──> [Envio no Outlook]`,
+  },
+];
+
+export const otherProjects: CompactProject[] = [
+  {
+    id: "cuidai",
+    titulo: "CuidAI — Assistente para enfermeiros da Atenção Primária",
+    status: "Entregue em 2025 · desativado",
+    stack: ["n8n", "IA", "VPS Linux", "WhatsApp"],
+    descricao:
+      "Assistente de IA no WhatsApp para apoio ao atendimento de enfermeiros da Atenção Primária, construído em n8n e hospedado em VPS Linux.",
+  },
+];
+
+export const howIBuild = {
+  title: "Como eu construo",
+  statement:
+    "Nos três agentes que mais evoluí, o problema começou do mesmo jeito: um agente fazendo coisa demais. A correção foi sempre dividir por função (tópicos, subagentes, variáveis de estado) em vez de aumentar o prompt. Cada correção foi validada com mais de 50 testes, e os agentes importantes mantêm um humano no controle antes de ações críticas.",
+  pillars: [
+    {
+      title: "Divisão por função",
+      detail:
+        "Tópicos no Copilot Studio, subagentes dedicados e variáveis de estado em JSON no n8n em vez de um prompt único gigante.",
+    },
+    {
+      title: "Validação com +50 testes",
+      detail:
+        "Cada ajuste de arquitetura e prompt foi validado com mais de 50 testes práticos nos cenários que falhavam.",
+    },
+    {
+      title: "Humano no controle",
+      detail:
+        "Botões Sim/Não antes de fechar chamados no ORAC, validação antes de disparos no TI Informa e transbordo humano no WhatsApp.",
+    },
   ],
 };
 
-// ============================================================
-// SOBRE MIM & FORMAÇÃO
-// ============================================================
+export interface ExperienceItem {
+  id: string;
+  company: string;
+  role: string;
+  department?: string;
+  period: string;
+  summary: string;
+}
+
+export const experiences: ExperienceItem[] = [
+  {
+    id: "hydro",
+    company: "Hydro",
+    role: "Estagiário de TI",
+    department: "GBS Global IT Support South America",
+    period: "05/2026 – Presente",
+    summary:
+      "+340 tickets resolvidos em 6 meses com 97,6% de SLA no ServiceNow; suporte e gerenciamento de endpoints (Intune, SCCM, Entra ID); PC Refresh 2026 (43 de 118 notebooks); piloto de redesign de RBAC no Intune; implantação de videoconferência em 5 andares.",
+  },
+  {
+    id: "crea-pa",
+    company: "CREA-PA",
+    role: "Estagiário de TI",
+    period: "02/2025 – 04/2026",
+    summary:
+      "Suporte a usuários em Windows, Linux e iOS; gerenciamento de chamados internos.",
+  },
+  {
+    id: "ifpa",
+    company: "IFPA",
+    role: "Monitor de laboratório",
+    period: "03/2023 – 12/2023",
+    summary:
+      "Instalação e manutenção de sistemas, hardware e redes locais.",
+  },
+];
+
+export const skillCategories = [
+  {
+    category: "IA e agentes",
+    items: [
+      "Copilot Studio",
+      "Claude",
+      "GPT",
+      "Microsoft Copilot",
+      "MCP",
+      "RAG",
+      "Engenharia de prompts",
+      "Orquestração de subagentes",
+    ],
+  },
+  {
+    category: "Automação e dados",
+    items: [
+      "n8n",
+      "Power Automate",
+      "AI Builder",
+      "Microsoft Fabric",
+      "SQL",
+      "Power BI",
+      "SharePoint",
+      "Webhooks",
+    ],
+  },
+  {
+    category: "Desenvolvimento com IA",
+    items: ["Claude", "Antigravity", "JavaScript", "HTML", "CSS", "Git"],
+  },
+  {
+    category: "Suporte e endpoint",
+    items: [
+      "ServiceNow",
+      "Intune",
+      "SCCM",
+      "Entra ID",
+      "Active Directory",
+      "Microsoft 365",
+      "Windows",
+      "Linux",
+      "VPS",
+    ],
+  },
+];
+
 export const about = {
   resumo:
-    "Estudante de Sistemas de Informação na UFRA e estagiário de TI na Hydro (GBS Global IT Support South America). Atuo no suporte corporativo a usuários, ServiceNow, Microsoft Intune e M365. Por iniciativa própria, construo soluções de inteligência artificial e automação que resolvem gargalos reais: desde o agente corporativo ORAC e a automação de NFs com OCR na Hydro, até atendentes virtuais de WhatsApp em n8n com RAG para clientes externos.",
+    "Estagiário de TI no Hydro (GBS Global IT Support South America) e estudante de Sistemas de Informação na UFRA. Atuo na operação de suporte corporativo e construo agentes de IA e automações práticas por iniciativa própria.",
   education: [
     {
-      institution: "Universidade Federal Rural da Amazônia (UFRA)",
+      institution: "UFRA — Universidade Federal Rural da Amazônia",
       degree: "Bacharelado em Sistemas de Informação",
-      period: "08/2024 – início de 2028 (previsto)",
-      details: "5º semestre em andamento, foco em engenharia de software e inteligência artificial.",
+      period: "08/2024 – conclusão prevista: início de 2028",
     },
     {
       institution: "IFPA — Instituto Federal do Pará",
       degree: "Técnico em Informática Integrado ao Ensino Médio",
-      period: "06/2021 – 12/2023",
-      details: "Formação técnica em redes, hardware, arquitetura de computadores e lógica de programação.",
+      period: "2021 – 2023",
     },
   ],
   languages: [
@@ -56,430 +464,163 @@ export const about = {
   ],
 };
 
-// ============================================================
-// EXPERIÊNCIA PROFISSIONAL (DO CURRÍCULO)
-// ============================================================
-export interface ExperienceItem {
-  id: string;
-  company: string;
-  role: string;
-  period: string;
-  location: string;
-  department?: string;
-  bullets: string[];
-  tags: string[];
-}
-
-export const experiences: ExperienceItem[] = [
-  {
-    id: "hydro",
-    company: "Hydro (Norsk Hydro Brasil)",
-    role: "Estagiário de TI",
-    period: "05/2026 – Presente",
-    location: "Belém - PA",
-    department: "GBS Global IT Support South America · Service Point Belém",
-    bullets: [
-      "Mais de 340 tickets resolvidos em 6 meses com 97,6% de SLA no ServiceNow: troubleshooting, work notes, additional comments e acompanhamento até a resolução.",
-      "Diagnóstico ágil de problemas em aplicações corporativas, orientação técnica direta a usuários e escalonamentos estruturados para equipes de suporte especializado.",
-      "Suporte a endpoints com Microsoft Intune, SCCM e Entra ID: suporte remoto, preparação, substituição de equipamentos e gestão do ciclo de vida dos notebooks.",
-      "PC Refresh 2026: substituição direta de 43 notebooks de um escopo de 118 equipamentos corporativos em Belém.",
-      "Participação ativa no piloto de redesign de RBAC no Intune (Client Operations / Modern Workplace): validação de permissões, ações remotas, troca de Primary User e decommissioning.",
-      "Implantação de salas de videoconferência em 5 andares (EGA, Finance, RH, Procurement e Projects/Control) e suporte à infraestrutura local do escritório.",
-      "Elaboração de um guia padrão de work notes e comentários técnicos para o time de analistas.",
-    ],
-    tags: ["ServiceNow", "Microsoft Intune", "Entra ID", "SCCM", "M365", "Suporte Corporativo"],
-  },
-  {
-    id: "crea-pa",
-    company: "CREA-PA (Conselho Regional de Engenharia e Agronomia)",
-    role: "Estagiário de Tecnologia da Informação",
-    period: "02/2025 – 04/2026",
-    location: "Belém - PA",
-    department: "Departamento de Tecnologia da Informação",
-    bullets: [
-      "Suporte técnico a usuários em ambientes Windows, Linux e iOS, com instalação e configuração de softwares, impressoras e manutenção de hardware.",
-      "Gerenciamento de chamados internos de TI, com triagem e acompanhamento das demandas até o encerramento.",
-      "Atuação em ambientes corporativos com suporte a redes locais e conectividade de estações.",
-      "Automação de atendimentos via WhatsApp com uso de inteligência artificial, contribuindo para a otimização de fluxos operacionais internos.",
-    ],
-    tags: ["Suporte a Usuários", "Windows", "Linux", "iOS", "Redes Corporativas", "Hardware"],
-  },
-  {
-    id: "ifpa",
-    company: "IFPA — Instituto Federal do Pará",
-    role: "Monitor de Laboratório de Informática",
-    period: "03/2023 – 12/2023",
-    location: "Ananindeua - PA",
-    department: "Laboratórios de Ensino e Pesquisa",
-    bullets: [
-      "Instalação e configuração de sistemas operacionais e aplicativos.",
-      "Manutenção preventiva e corretiva de hardware e suporte técnico a usuários.",
-      "Atuação em redes locais, incluindo manutenção de equipamentos e resolução de falhas de conectividade.",
-      "Execução de rotinas básicas de segurança e elaboração de documentação técnica.",
-    ],
-    tags: ["Hardware", "Redes Locais", "Linux", "Windows", "Documentação Técnica"],
-  },
-];
-
-// ============================================================
-// PROJETOS DE IA E AUTOMAÇÃO (COM FOTOS E DETALHES REAIS)
-// ============================================================
-export interface Project {
-  id: string;
-  titulo: string;
-  categoria: "Hydro (Corporativo)" | "Projetos em n8n & WhatsApp";
-  status: string;
-  resumo: string;
-  problema: string;
-  solucao: string[];
-  tecnologias: string[];
-  resultados: string[];
-  imagemDestaque?: string;
-  galeria: { src: string; legenda: string }[];
-  diagrama?: string;
-  demoVideoUrl?: string;
-  evolucao?: string;
-  proximasEtapas?: string;
-}
-
-export const projects: Project[] = [
-  // --- HYDRO / CORPORATIVO ---
-  {
-    id: "orac",
-    titulo: "ORAC — Agente de IA para IT Operations",
-    categoria: "Hydro (Corporativo)",
-    status: "Publicado / Piloto ativo",
-    resumo:
-      "Agente de IA no Microsoft Teams que consulta tickets do ServiceNow, pesquisa mais de 16 mil KBs no Microsoft Fabric (SQL) e apoia os analistas no troubleshooting.",
-    problema:
-      "Analistas gastavam tempo excessivo lendo históricos longos de chamados no ServiceNow; KBs e SOPs estavam dispersos; escalonamentos P1/P2 e Work Notes careciam de padronização.",
-    solucao: [
-      "Agente orquestrador construído no Microsoft Copilot Studio com GPT.",
-      "Subagentes especializados para escalonamentos críticos P1/P2 e geração de Work Notes padronizadas com confirmação interativa.",
-      "Fluxo no Power Automate que consulta chamados via SQL e normaliza dados em JSON estruturado.",
-      "Dados do ServiceNow disponíveis no Microsoft Fabric, consultados por fluxos automatizados que construí.",
-      "Mecanismo de Health Score (0–100) para priorização inteligente do backlog.",
-    ],
-    tecnologias: ["Copilot Studio", "GPT", "Power Automate", "Microsoft Fabric", "ServiceNow", "SQL", "Teams"],
-    resultados: [
-      "Estimativa baseada no meu uso: cerca de 20 minutos economizados por ticket.",
-      "Maior ganho de agilidade em problemas internos recorrentes já documentados na base.",
-      "Padronização total dos escalonamentos e registros para equipes de nível 3.",
-    ],
-    galeria: [],
-    diagrama: `[Microsoft Teams] ──> [ORAC: Copilot Studio] ──> [Subagentes P1/P2 & Work Notes] ──> [Power Automate SQL] ──> [Microsoft Fabric / ServiceNow]`,
-  },
-  {
-    id: "nfs",
-    titulo: "Automação de Notas Fiscais Dell",
-    categoria: "Hydro (Corporativo)",
-    status: "Em produção",
-    resumo:
-      "Fluxo automatizado que lê notas fiscais digitalizadas com IA e OCR, extrai dados cadastrais e manuscritos, arquiva no SharePoint e notifica no Teams sem intervenção manual.",
-    problema:
-      "Processo manual com seis etapas repetitivas (scan, abrir e-mail, renomear, salvar localmente, upload e arquivamento), demandando ~8 minutos por nota com risco de inconsistência.",
-    solucao: [
-      "Gatilho no Power Automate disparado a cada e-mail recebido da multifuncional.",
-      "Leitura do PDF com AI Builder e OCR, extraindo número da NF, ordem de compra, itens e dados manuscritos.",
-      "Renomeação padronizada e upload dinâmico em biblioteca SharePoint Online.",
-      "Notificação com o arquivo no Microsoft Teams e envio de cópia por e-mail ao solicitante.",
-    ],
-    tecnologias: ["Power Automate", "AI Builder", "OCR", "SharePoint Online", "Outlook", "Teams"],
-    resultados: [
-      "Tempo reduzido de ~8 min para ~15 s por nota (~97% de economia de tempo).",
-      "Aproximadamente 31 horas liberadas por ano para a equipe de IT Operations.",
-      "Eliminação de erros de digitação e padronização total dos arquivos.",
-    ],
-    demoVideoUrl: "/videos/automacao-nf-dell.mp4",
-    galeria: [],
-    diagrama: `[Digitalização Multifuncional] ──> [Power Automate] ──> [AI Builder OCR] ──> [SharePoint Online] ──> [Alerta Microsoft Teams]`,
-  },
-  {
-    id: "tiinforma",
-    titulo: "TI Informa — Agente de Comunicados",
-    categoria: "Hydro (Corporativo)",
-    status: "Em desenvolvimento",
-    resumo:
-      "Agente de IA para elaboração e padronização rápida de comunicados operacionais de TI (indisponibilidades, quedas de link e manutenções preventivas).",
-    problema:
-      "Comunicados emergenciais eram escritos manualmente sob pressão, gerando atraso e formatos divergentes a cada ocorrência.",
-    solucao: [
-      "Agente identifica o tipo de ocorrência a partir do contexto.",
-      "Gera o modelo de comunicado adequado com base no histórico corporativo.",
-      "Painel de prévia com aprovação em 1 clique pelo solicitante antes da transmissão.",
-    ],
-    tecnologias: ["Copilot Studio", "Power Automate", "Outlook", "Prompt Engineering"],
-    resultados: [
-      "Tempo de elaboração estimado de 10–20 min para 2–5 min por comunicado.",
-      "Linguagem clara e objetiva para os usuários de negócio.",
-    ],
-    galeria: [],
-    diagrama: `[Registro da Ocorrência] ──> [Copilot Studio Engine] ──> [Validação do Solicitante] ──> [Disparo Outlook/Teams]`,
-  },
-
-  // --- PROJETOS INDEPENDENTES EM N8N ---
-  {
-    id: "clinica",
-    titulo: "Agente de Agendamento para Clínica Médica",
-    categoria: "Projetos em n8n & WhatsApp",
-    status: "Construído e entregue (Demo ativa)",
-    resumo:
-      "Agente de IA no WhatsApp para clínica dermatológica que transcreve áudios e imagens, orienta sobre valores, consulta disponibilidade e agenda no Google Calendar via MCP.",
-    problema:
-      "A equipe de recepção perdia horas conciliando horários no chat, conferindo disponibilidades de agenda e confirmando presenças de pacientes.",
-    solucao: [
-      "Workflow completo desenvolvido em n8n conectando WhatsApp Webhook a modelos de IA.",
-      "Integração com Google Calendar via Model Context Protocol (MCP) para leitura e gravação de eventos em tempo real.",
-      "Instruções refinadas de diálogo para triagem de especialidade, confirmação de dados e envio de lembrete com preparo pré-consulta.",
-      "Tratamento automático de transcrição de áudios e mensagens de imagem.",
-    ],
-    tecnologias: ["n8n", "WhatsApp API", "MCP (Model Context Protocol)", "Google Calendar", "LLMs", "Webhooks"],
-    resultados: [
-      "Jornada de agendamento concluída em menos de 1 minuto diretamente no WhatsApp.",
-      "Confirmação automática de presença com dados completos (RG, data, horário e orientações).",
-      "Eliminação de conflitos de agenda através de validação em tempo real.",
-    ],
-    imagemDestaque: "/images/clinica-fluxo-n8n.png",
-    galeria: [
-      { src: "/images/clinica-fluxo-n8n.png", legenda: "Canvas n8n: fluxo completo com webhook, transcrição de áudio, AI Agent e MCP Calendar." },
-      { src: "/images/clinica-horarios.png", legenda: "Agente consultando a agenda em tempo real e oferecendo opções de horários." },
-      { src: "/images/clinica-dados-confirmacao.png", legenda: "Validação e coleta de dados cadastrais do paciente via WhatsApp." },
-      { src: "/images/clinica-agendamento.png", legenda: "Confirmação e registro automático da consulta particular na agenda médica." },
-      { src: "/images/clinica-confirmacao.png", legenda: "Mensagem com orientações de preparo e solicitação de confirmação de presença." },
-    ],
-    diagrama: `[Paciente (WhatsApp)] ──> [n8n Webhook] ──> [Tratamento Áudio/Texto] ──> [AI Agent + MCP] ──> [Google Calendar API] ──> [Confirmação Automática]`,
-  },
-  {
-    id: "creaai",
-    titulo: "CreaAI — Atendente Virtual do CREA-PA",
-    categoria: "Projetos em n8n & WhatsApp",
-    status: "Construído no estágio",
-    resumo:
-      "Atendente virtual com IA no WhatsApp para o Conselho Regional de Engenharia e Agronomia do Pará, respondendo sobre anuidade, procedimentos e emissão de ART com RAG.",
-    problema:
-      "Centenas de mensagens repetitivas diárias sobre valores de anuidade, prazos de desconto e passo a passo de ART sobrecarregavam o atendimento.",
-    solucao: [
-      "Fluxo de IA construído em n8n com integração WhatsApp e memória conversacional com Redis.",
-      "Arquitetura RAG com base vetorial no Supabase (Supabase Vector Store) e embeddings da OpenAI.",
-      "Instruções e guardrails para respostas precisas sobre a Lei nº 6.496/1977, sistema SITAC e escalonamento para atendente humano quando necessário.",
-    ],
-    tecnologias: ["n8n", "WhatsApp Cloud API", "RAG", "Supabase Vector Store", "OpenAI Embeddings", "Redis"],
-    resultados: [
-      "Resolução imediata de dúvidas sobre anuidades com cálculo de descontos por data.",
-      "Passo a passo interativo para emissão de ART com link do sistema SITAC.",
-      "Escalonamento contextualizado para atendentes quando a demanda foge do escopo.",
-    ],
-    imagemDestaque: "/images/crea-fluxo-n8n.png",
-    galeria: [
-      { src: "/images/crea-fluxo-n8n.png", legenda: "Canvas n8n: fluxo WhatsApp, RAG com Supabase Vector Store e AI Agent." },
-      { src: "/images/crea-anuidade.png", legenda: "Agente informando valores e regras de desconto da anuidade 2025." },
-      { src: "/images/crea-art.png", legenda: "Orientações sobre fundamentação legal e passo a passo para emissão da ART." },
-      { src: "/images/crea-art-motivo.png", legenda: "Explicação sobre fundamentação da Lei nº 6.496/1977 e link para o sistema SITAC." },
-    ],
-    diagrama: `[Profissional (WhatsApp)] ──> [n8n Webhook] ──> [RAG: Supabase Vector Store] ──> [OpenAI LLM + Redis Memory] ──> [Resposta WhatsApp]`,
-  },
-  {
-    id: "cuidai",
-    titulo: "CuidAI — Assistente para a Atenção Primária",
-    categoria: "Projetos em n8n & WhatsApp",
-    status: "Construído em 2025 (Hospedado em VPS)",
-    resumo:
-      "Assistente de IA no WhatsApp para apoio ao atendimento de enfermeiros da Atenção Primária à Saúde, estruturado em n8n e hospedado em VPS Linux.",
-    problema:
-      "Necessidade de auxílio ágil na consulta a protocolos clínicos da atenção primária e organização rápida de rotinas assistenciais durante os plantões.",
-    solucao: [
-      "Assistente desenvolvido em n8n com interface direta no WhatsApp.",
-      "Hospedagem dedicada em VPS Linux com alta disponibilidade.",
-      "Base de conhecimento com protocolos clínicos estruturados e geração de resumos assistenciais.",
-    ],
-    tecnologias: ["n8n", "WhatsApp API", "LLMs", "VPS Linux", "JSON"],
-    resultados: [
-      "Consulta ágil a diretrizes da Atenção Primária diretamente pelo smartphone.",
-      "Auxílio na sistematização de anotações e passagem de rotinas.",
-    ],
-    galeria: [],
-    diagrama: `[Enfermeiro (WhatsApp)] ──> [n8n em VPS Linux] ──> [Agente LLM Clínico] ──> [Protocolos Atenção Primária] ──> [Resposta no Chat]`,
-  },
-];
-
-// ============================================================
-// COMPETÊNCIAS / SKILLS (DO CURRÍCULO)
-// ============================================================
-export const skillCategories = [
-  {
-    category: "IA e Agentes",
-    items: [
-      "Microsoft Copilot Studio",
-      "Claude (Anthropic)",
-      "GPT (OpenAI)",
-      "Microsoft Copilot",
-      "MCP (Model Context Protocol)",
-      "RAG (Retrieval-Augmented Generation)",
-      "Engenharia de Prompts",
-      "Orquestração de Subagentes",
-    ],
-  },
-  {
-    category: "Automação e Dados",
-    items: [
-      "n8n",
-      "Power Automate",
-      "AI Builder (OCR)",
-      "Microsoft Fabric",
-      "SQL",
-      "Power BI",
-      "SharePoint Online",
-      "Webhooks & REST APIs",
-    ],
-  },
-  {
-    category: "Suporte e ITSM",
-    items: [
-      "ServiceNow (Gestão de Tickets & SLAs)",
-      "Work Notes & SOPs",
-      "Escalonamentos P1/P2",
-      "Troubleshooting N1/N2",
-      "Hardware & Redes",
-    ],
-  },
-  {
-    category: "Endpoint e Identidade",
-    items: [
-      "Microsoft Intune",
-      "SCCM",
-      "Entra ID (Azure AD)",
-      "Active Directory",
-      "Microsoft 365",
-      "Windows, Linux e iOS",
-      "VPS Linux",
-    ],
-  },
-];
-
-// ============================================================
-// GALERIA (COM OS ARQUIVOS E CAPTURAS REAIS ENVIADOS)
-// ============================================================
 export interface GalleryItem {
   id: string;
   projetoId: string;
   projetoNome: string;
   titulo: string;
-  categoria: string;
-  src: string;
+  categoria: "ORAC" | "Notas Fiscais Dell" | "Agendamento Clínica" | "CreaAI";
+  kind: "image" | "orac-diagram" | "nfs-diagram";
+  src?: string;
+  width?: number;
+  height?: number;
   legenda: string;
 }
 
 export const galleryFilters = [
   "Todos",
-  "CreaAI",
-  "Agendamento Clínica",
   "ORAC",
-  "Notas Fiscais",
+  "Notas Fiscais Dell",
+  "Agendamento Clínica",
+  "CreaAI",
 ] as const;
 
 export const galleryItems: GalleryItem[] = [
   {
-    id: "gal-crea-fluxo",
-    projetoId: "creaai",
-    projetoNome: "CreaAI",
-    titulo: "Workflow n8n: CreaAI no WhatsApp",
-    categoria: "CreaAI",
-    src: "/images/crea-fluxo-n8n.png",
-    legenda: "Workflow completo no n8n: recepção de mensagens, RAG com Supabase Vector Store, OpenAI Chat Model e memória Redis.",
+    id: "gal-orac-arquitetura",
+    projetoId: "orac",
+    projetoNome: "ORAC",
+    titulo: "Arquitetura do ORAC (Copilot Studio · Fabric SQL · ServiceNow)",
+    categoria: "ORAC",
+    kind: "orac-diagram",
+    legenda:
+      "Fluxo com dados fictícios: consulta de ticket via Power Automate, pesquisa em +16 mil KBs no Fabric (SQL), subagentes P1/P2 e work notes com confirmação Sim/Não do analista.",
   },
   {
-    id: "gal-crea-anuidade",
-    projetoId: "creaai",
-    projetoNome: "CreaAI",
-    titulo: "Consulta de Anuidade no WhatsApp",
-    categoria: "CreaAI",
-    src: "/images/crea-anuidade.png",
-    legenda: "CreaAI informando valores integrais e faixas de desconto proporcional da anuidade 2025 para pessoas físicas.",
-  },
-  {
-    id: "gal-crea-art",
-    projetoId: "creaai",
-    projetoNome: "CreaAI",
-    titulo: "Passo a Passo de Emissão de ART",
-    categoria: "CreaAI",
-    src: "/images/crea-art.png",
-    legenda: "Explicação fundamentada da obrigatoriedade da ART (Lei nº 6.496/1977) com link direto para o sistema SITAC.",
+    id: "gal-nfs-antes-depois",
+    projetoId: "nfs",
+    projetoNome: "Automação de Notas Fiscais Dell",
+    titulo: "Antes e Depois: Fluxo com AI Builder (OCR) e Dados Fictícios",
+    categoria: "Notas Fiscais Dell",
+    kind: "nfs-diagram",
+    legenda:
+      "Comparativo do processo manual (~8 min por nota) contra o fluxo automatizado (~15 s por nota, observado no meu uso) com extração via OCR e aviso no Teams.",
   },
   {
     id: "gal-clinica-fluxo",
     projetoId: "clinica",
     projetoNome: "Agendamento Clínica",
-    titulo: "Workflow n8n: Agendamento Médico",
+    titulo: "Workflow n8n: Agente Principal, Subagente e Servidor MCP",
     categoria: "Agendamento Clínica",
-    src: "/images/clinica-fluxo-n8n.png",
-    legenda: "Pipeline n8n com nó de tratamento de dados, AI Agent, MCP Server Trigger e integração com Google Calendar.",
+    kind: "image",
+    src: "/images/clinica-fluxo-n8n.webp",
+    width: 1024,
+    height: 481,
+    legenda:
+      "Fluxo em n8n com transcrição de áudio, análise de imagem, subagente exclusivo de agendamentos e integração com Google Calendar via MCP.",
   },
   {
     id: "gal-clinica-horarios",
     projetoId: "clinica",
     projetoNome: "Agendamento Clínica",
-    titulo: "Consulta e Oferta de Horários Livres",
+    titulo: "Consulta de Horários Disponíveis (Cabeçalho Anonimizado)",
     categoria: "Agendamento Clínica",
-    src: "/images/clinica-horarios.png",
-    legenda: "Diálogo natural via WhatsApp: o agente verifica a agenda em tempo real e oferece opções nos turnos da manhã e tarde.",
-  },
-  {
-    id: "gal-clinica-agendamento",
-    projetoId: "clinica",
-    projetoNome: "Agendamento Clínica",
-    titulo: "Confirmação de Agendamento Particular",
-    categoria: "Agendamento Clínica",
-    src: "/images/clinica-agendamento.png",
-    legenda: "Agendamento confirmado no calendário com dados do paciente, data, horário e link seguro da conversa.",
-  },
-  {
-    id: "gal-crea-art-motivo",
-    projetoId: "creaai",
-    projetoNome: "CreaAI",
-    titulo: "Dúvidas e Legislação sobre ART",
-    categoria: "CreaAI",
-    src: "/images/crea-art-motivo.png",
-    legenda: "Agente explicando a fundamentação legal da Lei nº 6.496/1977 e orientando sobre regularidade com link direto ao SITAC.",
+    kind: "image",
+    src: "/images/clinica-horarios.webp",
+    width: 1024,
+    height: 649,
+    legenda:
+      "Agente verificando horários livres no Google Calendar e respondendo no WhatsApp (dados de teste próprios).",
   },
   {
     id: "gal-clinica-dados",
     projetoId: "clinica",
     projetoNome: "Agendamento Clínica",
-    titulo: "Coleta e Validação de Dados",
+    titulo: "Confirmação de Dados Antes de Agendar",
     categoria: "Agendamento Clínica",
-    src: "/images/clinica-dados-confirmacao.png",
-    legenda: "Agente coletando dados completos do paciente e confirmando horário específico escolhido pelo usuário.",
+    kind: "image",
+    src: "/images/clinica-dados.webp",
+    width: 1024,
+    height: 589,
+    legenda:
+      "Validação dos dados do paciente antes de registrar o compromisso na agenda.",
   },
   {
-    id: "gal-nfs-video",
-    projetoId: "nfs",
-    projetoNome: "Notas Fiscais Dell",
-    titulo: "Vídeo Demonstrativo: Automação com AI Builder & OCR",
-    categoria: "Notas Fiscais",
-    src: "/videos/automacao-nf-dell.mp4",
-    legenda: "Demonstração gravada do fluxo no Power Automate com AI Builder (OCR): extração automática de dados de NF digitalizada, renomeação e upload no SharePoint.",
+    id: "gal-clinica-agendamento",
+    projetoId: "clinica",
+    projetoNome: "Agendamento Clínica",
+    titulo: "Registro da Consulta e Aviso à Clínica (Anonimizado)",
+    categoria: "Agendamento Clínica",
+    kind: "image",
+    src: "/images/clinica-agendamento.webp",
+    width: 1024,
+    height: 665,
+    legenda:
+      "Consulta registrada no Google Calendar e resumo enviado para a clínica.",
   },
   {
     id: "gal-clinica-confirmacao",
     projetoId: "clinica",
     projetoNome: "Agendamento Clínica",
-    titulo: "Lembrete e Confirmação de Presença",
+    titulo: "Orientações e Confirmação de Presença (Endereço Anonimizado)",
     categoria: "Agendamento Clínica",
-    src: "/images/clinica-confirmacao.png",
-    legenda: "Disparo automático de lembrete com endereço, documentos necessários e confirmação de presença com resposta rápida.",
+    kind: "image",
+    src: "/images/clinica-confirmacao.webp",
+    width: 1024,
+    height: 531,
+    legenda:
+      "Mensagem com orientações pré-consulta e confirmação de presença pelo paciente.",
+  },
+  {
+    id: "gal-crea-fluxo",
+    projetoId: "creaai",
+    projetoNome: "CreaAI",
+    titulo: "Workflow n8n: RAG no Supabase Vector Store e Estado em JSON",
+    categoria: "CreaAI",
+    kind: "image",
+    src: "/images/crea-fluxo-n8n.webp",
+    width: 1024,
+    height: 549,
+    legenda:
+      "Fluxo no n8n com passagem de variáveis em JSON, memória Redis, Supabase Vector Store e embeddings OpenAI.",
+  },
+  {
+    id: "gal-crea-anuidade",
+    projetoId: "creaai",
+    projetoNome: "CreaAI",
+    titulo: "Consulta de Valores e Descontos de Anuidade",
+    categoria: "CreaAI",
+    kind: "image",
+    src: "/images/crea-anuidade.webp",
+    width: 1024,
+    height: 674,
+    legenda:
+      "Atendente virtual respondendo sobre valores integrais e prazos de desconto da anuidade.",
+  },
+  {
+    id: "gal-crea-art",
+    projetoId: "creaai",
+    projetoNome: "CreaAI",
+    titulo: "Orientação sobre Emissão de ART",
+    categoria: "CreaAI",
+    kind: "image",
+    src: "/images/crea-art.webp",
+    width: 1024,
+    height: 733,
+    legenda:
+      "Explicação da obrigatoriedade da ART e envio do link do sistema.",
+  },
+  {
+    id: "gal-crea-passo",
+    projetoId: "creaai",
+    projetoNome: "CreaAI",
+    titulo: "Passo a Passo para Registro da ART",
+    categoria: "CreaAI",
+    kind: "image",
+    src: "/images/crea-passo-a-passo.webp",
+    width: 1024,
+    height: 726,
+    legenda:
+      "Instruções em etapas curtas e opção de encaminhamento para atendente humano.",
   },
 ];
-
-// ============================================================
-// SOBRE ESTE SITE
-// ============================================================
-export const aboutSite = {
-  declaracao: "Este site foi construído com IA (Antigravity), a partir de prompts, em horas.",
-  stack: ["React 19", "Vite 8", "TypeScript", "Tailwind CSS"],
-  pontos: [
-    "Zero rastreadores e zero cookies de terceiros",
-    "Acessibilidade de alto contraste e navegação por teclado",
-    "Capturas reais de fluxos no n8n e interações no WhatsApp",
-    "Desenvolvido de forma iterativa com assistência de IA",
-  ],
-};
