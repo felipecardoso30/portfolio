@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import type { Project } from '../data/content';
 import NfsBeforeAfterDiagram from './NfsBeforeAfterDiagram';
@@ -14,6 +14,25 @@ const FOCUSABLE =
 export default function CaseStudyDrawer({ project, onClose }: CaseStudyDrawerProps) {
   const panelRef = useRef<HTMLDivElement | null>(null);
   const closeRef = useRef<HTMLButtonElement | null>(null);
+  const [selection, setSelection] = useState<{ projectId: string; index: number }>({
+    projectId: '',
+    index: 0,
+  });
+
+  const activeIndex =
+    project && selection.projectId === project.id ? selection.index : 0;
+
+  const setActiveIndex = useCallback(
+    (next: number | ((prev: number) => number)) => {
+      if (!project) return;
+      setSelection((prev) => {
+        const current = prev.projectId === project.id ? prev.index : 0;
+        const resolved = typeof next === 'function' ? next(current) : next;
+        return { projectId: project.id, index: resolved };
+      });
+    },
+    [project]
+  );
 
   useEffect(() => {
     if (!project) return;
@@ -30,6 +49,18 @@ export default function CaseStudyDrawer({ project, onClose }: CaseStudyDrawerPro
       if (e.key === 'Escape') {
         e.preventDefault();
         onClose();
+        return;
+      }
+      if (project.galeria.length > 1 && e.key === 'ArrowRight') {
+        e.preventDefault();
+        setActiveIndex((prev) => (prev + 1) % project.galeria.length);
+        return;
+      }
+      if (project.galeria.length > 1 && e.key === 'ArrowLeft') {
+        e.preventDefault();
+        setActiveIndex(
+          (prev) => (prev - 1 + project.galeria.length) % project.galeria.length
+        );
         return;
       }
       if (e.key !== 'Tab' || !panelRef.current) return;
@@ -56,11 +87,16 @@ export default function CaseStudyDrawer({ project, onClose }: CaseStudyDrawerPro
       document.body.style.paddingRight = paddingRight;
       previouslyFocused?.focus();
     };
-  }, [project, onClose]);
+  }, [project, onClose, setActiveIndex]);
 
   if (!project) return null;
 
   const titleId = `case-${project.id}-title`;
+  const totalImages = project.galeria.length;
+  const currentImg =
+    totalImages > 0
+      ? project.galeria[Math.min(activeIndex, totalImages - 1)]
+      : null;
 
   return createPortal(
     <div className="drawer" role="presentation">
@@ -97,7 +133,6 @@ export default function CaseStudyDrawer({ project, onClose }: CaseStudyDrawerPro
         </header>
 
         <div className="drawer__body">
-          {/* Resumo */}
           <section className="case-block" aria-label="Resumo">
             <dl className="summary">
               {project.iniciativa && (
@@ -196,32 +231,85 @@ export default function CaseStudyDrawer({ project, onClose }: CaseStudyDrawerPro
             </section>
           )}
 
-          {project.galeria.length > 0 && (
+          {currentImg && (
             <section className="case-block">
-              <h3 className="case-block__title">Galeria de prints</h3>
-              <div className="case-gallery">
-                {project.galeria.map((img) => (
-                  <figure key={img.src} className="case-gallery__item">
-                    <a
-                      href={img.src}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="case-gallery__link"
-                      aria-label={`Abrir imagem em tamanho real: ${img.legenda}`}
-                    >
-                      <img
-                        src={img.src}
-                        alt={img.legenda}
-                        width={img.width}
-                        height={img.height}
-                        loading="lazy"
-                        decoding="async"
-                      />
-                    </a>
-                    <figcaption>{img.legenda}</figcaption>
-                  </figure>
-                ))}
+              <div className="viewer-head">
+                <h3 className="case-block__title">Galeria de prints</h3>
+                <span className="viewer-counter">
+                  {activeIndex + 1} de {totalImages}
+                </span>
               </div>
+
+              <div className="viewer-stage">
+                <div className="viewer-stage__frame">
+                  <img
+                    key={currentImg.src}
+                    src={currentImg.src}
+                    alt={currentImg.legenda}
+                    width={currentImg.width}
+                    height={currentImg.height}
+                    decoding="async"
+                    className="viewer-stage__img"
+                  />
+                </div>
+
+                <div className="viewer-stage__bar">
+                  <p className="viewer-stage__caption">{currentImg.legenda}</p>
+                  {totalImages > 1 && (
+                    <div className="viewer-stage__nav">
+                      <button
+                        type="button"
+                        className="viewer-nav-btn"
+                        onClick={() =>
+                          setActiveIndex((prev) => (prev - 1 + totalImages) % totalImages)
+                        }
+                        aria-label="Captura anterior"
+                      >
+                        ← Anterior
+                      </button>
+                      <button
+                        type="button"
+                        className="viewer-nav-btn"
+                        onClick={() =>
+                          setActiveIndex((prev) => (prev + 1) % totalImages)
+                        }
+                        aria-label="Próxima captura"
+                      >
+                        Próxima →
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {totalImages > 1 && (
+                <div className="viewer-thumbs" role="tablist" aria-label="Miniaturas das capturas">
+                  {project.galeria.map((img, idx) => {
+                    const isSelected = idx === activeIndex;
+                    return (
+                      <button
+                        type="button"
+                        key={img.src}
+                        role="tab"
+                        aria-selected={isSelected}
+                        aria-label={`Ver captura ${idx + 1}: ${img.legenda}`}
+                        onClick={() => setActiveIndex(idx)}
+                        className={`viewer-thumb${isSelected ? ' is-active' : ''}`}
+                      >
+                        <img
+                          src={img.src}
+                          alt=""
+                          width={img.width}
+                          height={img.height}
+                          loading="lazy"
+                          decoding="async"
+                        />
+                        <span className="viewer-thumb__index">0{idx + 1}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
             </section>
           )}
         </div>

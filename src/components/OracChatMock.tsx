@@ -54,6 +54,7 @@ export default function OracChatMock() {
     window.matchMedia('(prefers-reduced-motion: reduce)').matches
   );
   const [inView, setInView] = useState<boolean>(true);
+  const [paused, setPaused] = useState<boolean>(false);
   const [visibleCount, setVisibleCount] = useState<number>(() =>
     typeof window !== 'undefined' &&
     window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -85,7 +86,7 @@ export default function OracChatMock() {
   }, []);
 
   useEffect(() => {
-    if (reducedMotion || !inView) return;
+    if (reducedMotion || !inView || paused) return;
 
     const delay =
       visibleCount < ORAC_STEPS.length ? STEP_INTERVAL_MS : END_PAUSE_MS;
@@ -95,9 +96,10 @@ export default function OracChatMock() {
     }, delay);
 
     return () => clearTimeout(timer);
-  }, [visibleCount, reducedMotion, inView]);
+  }, [visibleCount, reducedMotion, inView, paused]);
 
-  const isTyping = !reducedMotion && inView && visibleCount < ORAC_STEPS.length;
+  const isTyping =
+    !reducedMotion && inView && !paused && visibleCount < ORAC_STEPS.length;
 
   return (
     <div
@@ -121,39 +123,46 @@ export default function OracChatMock() {
       </div>
 
       <div className="chat-mock__body">
-        {ORAC_STEPS.slice(0, visibleCount).map((msg) => (
-          <div
-            key={msg.id}
-            className={`chat-mock__row ${
-              msg.sender === 'analyst'
-                ? 'chat-mock__row--analyst'
-                : 'chat-mock__row--orac'
-            } orac-msg-enter`}
-          >
+        {ORAC_STEPS.slice(0, visibleCount).map((msg) => {
+          const confirmed = visibleCount >= 4;
+          return (
             <div
-              className={`chat-mock__bubble ${
+              key={msg.id}
+              className={`chat-mock__row ${
                 msg.sender === 'analyst'
-                  ? 'chat-mock__bubble--analyst'
-                  : msg.isStructured
-                  ? 'chat-mock__bubble--structured'
-                  : 'chat-mock__bubble--orac'
-              }`}
+                  ? 'chat-mock__row--analyst'
+                  : 'chat-mock__row--orac'
+              } orac-msg-enter`}
             >
-              <div className="chat-mock__text">{msg.text}</div>
-              {msg.requiresConfirmation && (
-                <div className="chat-mock__actions" aria-hidden="true">
-                  <span className="chat-mock__choice chat-mock__choice--yes">
-                    Sim (Confirmar)
-                  </span>
-                  <span className="chat-mock__choice chat-mock__choice--no">
-                    Não
-                  </span>
-                </div>
-              )}
-              <div className="chat-mock__time">{msg.time}</div>
+              <div
+                className={`chat-mock__bubble ${
+                  msg.sender === 'analyst'
+                    ? 'chat-mock__bubble--analyst'
+                    : msg.isStructured
+                    ? 'chat-mock__bubble--structured'
+                    : 'chat-mock__bubble--orac'
+                }`}
+              >
+                <div className="chat-mock__text">{msg.text}</div>
+                {msg.requiresConfirmation && (
+                  <div className="chat-mock__actions" aria-hidden="true">
+                    <span
+                      className={`chat-mock__choice chat-mock__choice--yes${
+                        confirmed ? ' is-selected' : ''
+                      }`}
+                    >
+                      {confirmed ? '✓ Sim (Confirmado)' : 'Sim (Confirmar)'}
+                    </span>
+                    <span className="chat-mock__choice chat-mock__choice--no">
+                      Não
+                    </span>
+                  </div>
+                )}
+                <div className="chat-mock__time">{msg.time}</div>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
 
         {isTyping && (
           <div
@@ -170,8 +179,36 @@ export default function OracChatMock() {
       </div>
 
       <div className="chat-mock__footer">
-        <span>Power Automate · Fabric (SQL) · ServiceNow</span>
-        <span className="chat-mock__status">● Humano no controle</span>
+        <div className="chat-mock__progress" aria-label={`Etapa ${visibleCount} de ${ORAC_STEPS.length}`}>
+          {ORAC_STEPS.map((step, idx) => (
+            <button
+              type="button"
+              key={step.id}
+              onClick={() => {
+                setPaused(true);
+                setVisibleCount(idx + 1);
+              }}
+              aria-label={`Ir para mensagem ${idx + 1}`}
+              className={`chat-mock__step-dot${
+                idx < visibleCount ? ' is-active' : ''
+              }`}
+            />
+          ))}
+        </div>
+
+        <div className="chat-mock__controls">
+          {!reducedMotion && (
+            <button
+              type="button"
+              onClick={() => setPaused((p) => !p)}
+              className="chat-mock__ctrl-btn"
+              aria-label={paused ? 'Retomar simulação' : 'Pausar simulação'}
+            >
+              {paused ? '▶ Retomar' : '❚❚ Pausar'}
+            </button>
+          )}
+          <span className="chat-mock__status">● Humano no controle</span>
+        </div>
       </div>
     </div>
   );
