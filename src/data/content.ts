@@ -3,7 +3,7 @@ export const CARGO = "Estagiário de TI · IA e Automação em IT Operations";
 export const LOCATION = "Belém, PA";
 export const EMAIL = "felipecardoso3005@gmail.com";
 export const WHATSAPP = "5591987382169";
-export const LINKEDIN = "https://linkedin.com/in/felipe-cardoso-1425652a9";
+export const LINKEDIN = "https://www.linkedin.com/in/felipe-neves-1425652a9";
 export const CURRICULO_PATH = "/curriculo-felipe-cardoso.pdf";
 
 export const WHATSAPP_MSG = encodeURIComponent(

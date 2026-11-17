@@ -28,7 +28,7 @@ const contacts = [
   },
   {
     label: 'LinkedIn',
-    detail: 'linkedin.com/in/felipe-cardoso-1425652a9',
+    detail: 'linkedin.com/in/felipe-neves-1425652a9',
     href: LINKEDIN,
     icon: (
       <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
