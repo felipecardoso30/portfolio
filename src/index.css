@@ -26,6 +26,8 @@
   --text-main: #FFFFFF;
   --text-body: #CBD5E1;
   --text-muted: #8B949E;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-std: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 html {
@@ -38,7 +40,7 @@ body {
   font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
   overflow-x: hidden;
   min-height: 100vh;
-  font-size: 15px;
+  font-size: 16px;
   line-height: 1.68;
 }
 
@@ -62,20 +64,80 @@ body {
 /* Fade-in scroll animation */
 .fade-in {
   opacity: 0;
-  transform: translateY(18px);
-  transition: opacity 0.45s ease, transform 0.45s ease;
+  transform: translateY(16px);
+  transition: opacity 0.52s var(--ease-out), transform 0.52s var(--ease-out);
 }
 .fade-in.visible {
   opacity: 1;
   transform: translateY(0);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .fade-in {
+/* Hero staggered entrance */
+.hero-step {
+  opacity: 0;
+  transform: translateY(12px);
+  animation: heroEnter 0.5s var(--ease-out) forwards;
+  animation-delay: calc(var(--step, 0) * 60ms);
+}
+
+@keyframes heroEnter {
+  to {
     opacity: 1;
-    transform: none;
-    transition: none;
+    transform: translateY(0);
   }
+}
+
+/* ORAC mockup message entrance */
+.orac-msg-enter {
+  animation: msgEnter 0.28s var(--ease-out) forwards;
+}
+
+@keyframes msgEnter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Typing dots */
+.typing-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #EA1D2C;
+  display: inline-block;
+  animation: bounceDot 1.2s infinite ease-in-out;
+}
+
+@keyframes bounceDot {
+  0%, 80%, 100% {
+    transform: scale(0.6);
+    opacity: 0.4;
+  }
+  40% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+}
+
+/* ORAC Flow SVG diagram lines */
+.flow-line {
+  stroke-dasharray: 6 8;
+  animation: flowDash 1.8s linear infinite;
+}
+
+@keyframes flowDash {
+  to {
+    stroke-dashoffset: -28;
+  }
+}
+
+.diagram:not(.is-visible) .flow-line {
+  animation-play-state: paused;
 }
 
 /* Subtle section background glow */
@@ -109,7 +171,7 @@ section[id] {
   background: #0E1217;
   border: 1px solid #21262D;
   border-radius: 16px;
-  transition: transform 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
+  transition: transform 180ms var(--ease-std), border-color 180ms var(--ease-std), box-shadow 180ms var(--ease-std);
 }
 
 .card:hover {
@@ -211,6 +273,32 @@ mark {
 :focus-visible {
   outline: 2px solid #EA1D2C;
   outline-offset: 2px;
+}
+
+/* Reduced motion override */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .fade-in,
+  .hero-step,
+  .orac-msg-enter {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+    animation: none !important;
+  }
+  .flow-line,
+  .typing-dot {
+    animation: none !important;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 /* Custom scrollbar */
