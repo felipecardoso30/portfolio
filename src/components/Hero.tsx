@@ -48,7 +48,7 @@ function MetricCard({ item }: { item: HeroMetric }) {
         <span aria-label={item.valueText} className="metric-card__value">
           <span aria-hidden="true">{formatted}</span>
         </span>
-        <span className="pill pill--sm">{item.classification}</span>
+        <span className="pill pill--accent pill--sm">{item.classification}</span>
       </div>
       <span className="metric-card__label">{item.label}</span>
     </div>
@@ -74,7 +74,7 @@ export default function Hero() {
             </p>
 
             <h1 className="hero-title hero-step" style={{ ['--step' as string]: 2 }}>
-              Construo <mark>agentes de IA</mark> que tiram trabalho manual do time.
+              Construo <mark className="hero-highlight">agentes de IA</mark> que tiram trabalho manual do time.
             </h1>
 
             <p className="hero-support hero-step" style={{ ['--step' as string]: 3 }}>
@@ -89,7 +89,7 @@ export default function Hero() {
 
             <div className="btn-row hero-step" style={{ ['--step' as string]: 5 }}>
               <a href="#projetos" className="btn btn--primary">
-                Ver projetos
+                <span>Ver projetos</span>
                 <svg
                   width="16"
                   height="16"
@@ -105,8 +105,22 @@ export default function Hero() {
               </a>
 
               {hasResumePdf && (
-                <a href={resumeHref} download className="btn btn--ghost">
-                  Baixar currículo (PDF)
+                <a href={resumeHref} download className="btn btn--resume">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.2"
+                    aria-hidden="true"
+                  >
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="7 10 12 15 17 10" />
+                    <line x1="12" y1="15" x2="12" y2="3" />
+                  </svg>
+                  <span>Baixar currículo</span>
+                  <span className="btn__badge">PDF</span>
                 </a>
               )}
 
